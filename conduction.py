@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 import csv
 
 
-Th_cond_wall = 2.25 # W/m/K, concrecte wall themrla Conductivity
+
 
 #Comuting heat loss through conduction [W] based on inside and outside temperature
-def heat_loss_wall(T_out, T_in, A_wall, e_wall):
+def heat_loss_wall(T_out, T_in, A_wall, e_wall, Th_cond_wall):
     U_wall = Th_cond_wall/e_wall
     Q_loss = U_wall*A_wall*(T_out-T_in)
     return Q_loss
@@ -36,21 +36,19 @@ for row in T_csvreader:
 T_out = np.reshape(np.array(T_out, dtype=np.float32), len(T_out))
 
 
-def update_plot():
+def update_plot(e_wall):
     #Constants
     T_in = 20 #K, inside desired temperature (assumed constant)
     A_wall = 40 #m^2, Wall surface area in contact with outside
     timestep = 3600*24 #1-hour timestep between temperature data points
     J2kwh = 2.77778*10**(-7) #Conversion coefficient between J and kWh
-
-    #Wall thickness (parameter to be modified)
-    e_wall = 0.3
+    Th_cond_wall = 2.25 # W/m/K, concrecte wall themrla Conductivity
 
     #Running the simulation
     Q_loss = heat_loss_wall(T_out, T_in, A_wall, e_wall)
     E_loss = np.zeros(14)
 
-    for i in range(13):
+    for i in range(len(Q_loss)-1):
         E_loss[i] = (energy_loss_wall(Q_loss[i:i+2], timestep))
     E_loss = E_loss*J2kwh
     #plt.plot(Q_loss)
