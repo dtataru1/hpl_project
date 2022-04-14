@@ -20,6 +20,8 @@ from PyQt5 import QtCore, QtWidgets
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+from heatBalance import HeatBalance, HeatBalanceGraph
+
 class MplCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
@@ -64,40 +66,43 @@ class Ui_Form(object):
         self.widget.setGeometry(100,0,900,600)
         layout = QtWidgets.QVBoxLayout(self.widget)
 
-        self.canvas = MplCanvas(self.widget, width=10, height=8, dpi=100)
+        self.canvas = HeatBalanceGraph(self.widget, width=10, height=8, dpi=100)
         self.canvas.setGeometry(QtCore.QRect(200, 10, 431, 251))
+        heat_balance = HeatBalance()
+        self.canvas.plot(heat_balance)
+      
 
-        grid = np.linspace(-2, 2, 100)
-        self.canvas.xdata = grid
-        self.canvas.ydata = (grid ** 2)
-        self.canvas.show()
+        #grid = np.linspace(-2, 2, 100)
+        #self.canvas.xdata = grid
+        #self.canvas.ydata = (grid ** 2)
+        #self.canvas.show()
         self.window = 0
         self.isolation = 0
         self.orientation = 0
-        self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state,0))
-        self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
-        self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
+        #self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state,0))
+        #self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
+        #self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
 
 
         layout.addWidget(self.canvas)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        #self.retranslateUi(Form)
+        #QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def update_plot(self,c,who):
-        if who == 0:
-            self.window = c
-        if who == 1:
-            self.isolation = c
-        if who == 2:
-            self.orientation = c
+    # def update_plot(self,c,who):
+    #     if who == 0:
+    #         self.window = c
+    #     if who == 1:
+    #         self.isolation = c
+    #     if who == 2:
+    #         self.orientation = c
 
-        self.canvas.ydata = (self.isolation*(self.canvas.xdata**2) + self.window) + np.exp(self.orientation/180)
-        self.canvas.axes.cla()  # Clear the canvas.
-        self.canvas.axes.plot(self.canvas.xdata, self.canvas.ydata, 'r')
-        self.canvas.axes.set_ybound(-40, 40)
-            # Trigger the canvas to update and redraw.
-        self.canvas.draw()
+    #     self.canvas.ydata = (self.isolation*(self.canvas.xdata**2) + self.window) + np.exp(self.orientation/180)
+    #     self.canvas.axes.cla()  # Clear the canvas.
+    #     self.canvas.axes.plot(self.canvas.xdata, self.canvas.ydata, 'r')
+    #     self.canvas.axes.set_ybound(-40, 40)
+    #         # Trigger the canvas to update and redraw.
+    #     self.canvas.draw()
 
 
 
