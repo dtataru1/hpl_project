@@ -9,7 +9,8 @@ class HeatBalance():
     
     def __init__(self, monthlyHeatconsumption=None):
         self.monthlyHeatconsumption = monthlyHeatconsumption
-        self._defaultConsumption()
+        if monthlyHeatconsumption is None :
+            self._defaultConsumption()
         
     def _defaultConsumption(self):
         self.monthlyHeatconsumption = {'January' : 10, 'February' : 5, 'March' : 2}
@@ -25,8 +26,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         self.axs.cla()
         consumption = heatBalance.monthlyHeatconsumption.values()
         labels = heatBalance.monthlyHeatconsumption.keys()
-        print(labels)
-        indices =  np.arange(3)
+        indices =  np.arange(len(labels))
         self.axs.bar(indices, consumption, color='red')
         self.axs.set_xticks(indices)
         self.axs.set_xticklabels(labels)
