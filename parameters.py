@@ -12,19 +12,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import matplotlib
 import numpy as np
-
-matplotlib.use('Qt5Agg')
-
 from PyQt5 import QtCore, QtWidgets
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+matplotlib.use('Qt5Agg')
+
+
+
 class MplCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111,ybound=(-40,40))
+        self.axes = fig.add_subplot(111, ybound=(-40,40))
         super(MplCanvas, self).__init__(fig)
 
 
@@ -74,6 +75,7 @@ class Ui_Form(object):
         self.window = 0
         self.isolation = 0
         self.orientation = 0
+        self.update_plot(0, 0)
         self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state,0))
         self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
         self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
@@ -117,7 +119,7 @@ class Window(QtWidgets.QMainWindow, Ui_Form):
         self.show()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     win = Window()
     sys.exit(app.exec())
