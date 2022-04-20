@@ -8,6 +8,22 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 
+class ConductionModel():
+    def __init__(self, graph):
+        self.graph = graph
+        self.size = 'default ???'
+        self.degree = 'default ???'
+        self.isolation = 'default ???'
+
+    def update_window(self, size):
+        pass
+
+    def update_isolation(self, size):
+        pass
+
+    def update_orientation(self, degree):
+        pass
+
 
 # Comuting heat loss through conduction [W] based on inside and outside temperature
 def heat_loss_wall(T_out, T_in, A_wall, e_wall, Th_cond_wall):
