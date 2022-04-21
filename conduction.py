@@ -7,22 +7,49 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+from heatBalance import HeatBalance
 
+
+### you have to read the HeatBalance balance object
 class ConductionModel():
-    def __init__(self, graph):
-        self.graph = graph
+    """
+    compute the heat balance of a building
+    """
+    def __init__(self):
         self.size = 'default ???'
         self.degree = 'default ???'
         self.isolation = 'default ???'
 
-    def update_window(self, size):
-        pass
+    def update_window(self, size : int):
+        """
+        compute new heat balance after update
 
-    def update_isolation(self, size):
-        pass
+        :param size: window size
+        :return: HeatBalance (object describing heat balance of the buidling)
+        """
+        ## TODO add correct implemetation
+        return HeatBalance()
+        
 
-    def update_orientation(self, degree):
-        pass
+    def update_isolation(self, size : int ):
+        """
+        compute new heat balance after update
+        
+        :param size: isolation width
+        :return: HeatBalance (object describing heat balance of the buidling)
+        """
+        ## TODO add correct implemetation
+        return HeatBalance()
+
+    def update_orientation(self, degree : int):
+        """
+        compute new heat balance after update
+        
+        :param size: building orientation
+        :return: HeatBalance (object describing heat balance of the buidling)
+        """
+        ## TODO add correct implemetation
+        return HeatBalance()
 
 
 # Comuting heat loss through conduction [W] based on inside and outside temperature

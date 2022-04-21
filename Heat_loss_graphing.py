@@ -31,7 +31,7 @@ class MplCanvas(FigureCanvas):
 
 
 class Ui_Form(object):
-    def setupUi(self, Form):
+    def setupUi(self, Form, graph):
         Form.setObjectName("Form")
         Form.resize(1000, 600)
         self.label = QtWidgets.QLabel(Form)
@@ -66,16 +66,16 @@ class Ui_Form(object):
         self.widget.setGeometry(100,0,900,600)
         layout = QtWidgets.QVBoxLayout(self.widget)
 
-        self.canvas = MplCanvas(self.widget, width=10, height=8, dpi=100)
+        self.canvas = graph
         self.canvas.setGeometry(QtCore.QRect(200, 10, 431, 251))
 
-        self.canvas.xdata = np.linspace(1,14,14)
-        self.canvas.ydata = np.zeros(14)
-        self.canvas.show()
-        self.window = 0
-        self.isolation = 0
-        self.orientation = 0
-        self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state))
+        # self.canvas.xdata = np.linspace(1,14,14)
+        # self.canvas.ydata = np.zeros(14)
+        # self.canvas.show()
+        # self.window = 0
+        # self.isolation = 0
+        # self.orientation = 0
+        #self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state))
         #self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
         #self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
 
@@ -85,50 +85,52 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
-        U_wall = Th_cond_wall / e_wall
-        Q_loss = U_wall * A_wall * (T_out - T_in)
-        return Q_loss
+        return self.horizontalSlider, self.horizontalSlider_2, self.dial
 
-    # Computing total energy loss [J] from heat loss information
-    def energy_loss_wall(self, Q, timestep):
-        E_loss = 0
-        for i in range(0, len(Q) - 1):
-            E_loss = E_loss + (Q[i] + Q[i + 1]) / 2 * timestep
-        return E_loss
+    # def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
+    #     U_wall = Th_cond_wall / e_wall
+    #     Q_loss = U_wall * A_wall * (T_out - T_in)
+    #     return Q_loss
 
-    def update_plot(self, e_wall):
-        # Reading csv temperature data
-        e_wall /= 100
-        e_wall += 0.01
-        T_file = open('geneva_temperature_2weeks.csv')
-        T_csvreader = csv.reader(T_file)
-        next(T_csvreader)
-        T_out = []
-        for row in T_csvreader:
-            T_out.append(row)
-        T_out = np.reshape(np.array(T_out, dtype=np.float32), len(T_out))
+    # # Computing total energy loss [J] from heat loss information
+    # def energy_loss_wall(self, Q, timestep):
+    #     E_loss = 0
+    #     for i in range(0, len(Q) - 1):
+    #         E_loss = E_loss + (Q[i] + Q[i + 1]) / 2 * timestep
+    #     return E_loss
 
-        # Constants
-        T_in = 20  # K, inside desired temperature (assumed constant)
-        A_wall = 40  # m^2, Wall surface area in contact with outside
-        timestep = 3600 * 24  # 1-hour timestep between temperature data points
-        J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
-        Th_cond_wall = 2.25  # W/m/K, concrecte wall themrla Conductivity
+    # def update_plot(self, e_wall):
+    #     # Reading csv temperature data
+    #     e_wall /= 100
+    #     e_wall += 0.01
+    #     T_file = open('geneva_temperature_2weeks.csv')
+    #     T_csvreader = csv.reader(T_file)
+    #     next(T_csvreader)
+    #     T_out = []
+    #     for row in T_csvreader:
+    #         T_out.append(row)
+    #     T_out = np.reshape(np.array(T_out, dtype=np.float32), len(T_out))
 
-        # Running the simulation
-        Q_loss = self.heat_loss_wall(T_out, T_in, A_wall, e_wall, Th_cond_wall)
-        E_loss = np.zeros(14)
+    #     # Constants
+    #     T_in = 20  # K, inside desired temperature (assumed constant)
+    #     A_wall = 40  # m^2, Wall surface area in contact with outside
+    #     timestep = 3600 * 24  # 1-hour timestep between temperature data points
+    #     J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
+    #     Th_cond_wall = 2.25  # W/m/K, concrecte wall themrla Conductivity
 
-        for i in range(len(Q_loss) - 1):
-            E_loss[i] = (self.energy_loss_wall(Q_loss[i:i + 2], timestep))
-        E_loss = E_loss * J2kwh
+    #     # Running the simulation
+    #     Q_loss = self.heat_loss_wall(T_out, T_in, A_wall, e_wall, Th_cond_wall)
+    #     E_loss = np.zeros(14)
 
-        self.canvas.ydata = E_loss
-        self.canvas.axes.cla()
-        self.canvas.axes.plot(self.canvas.xdata, self.canvas.ydata)
-        self.canvas.axes.set_ybound(-1000, 0)
-        self.canvas.draw()
+    #     for i in range(len(Q_loss) - 1):
+    #         E_loss[i] = (self.energy_loss_wall(Q_loss[i:i + 2], timestep))
+    #     E_loss = E_loss * J2kwh
+
+    #     self.canvas.ydata = E_loss
+    #     self.canvas.axes.cla()
+    #     self.canvas.axes.plot(self.canvas.xdata, self.canvas.ydata)
+    #     self.canvas.axes.set_ybound(-1000, 0)
+    #     self.canvas.draw()
 
     #def update_plot(self,c,who):
     #    if who == 0:

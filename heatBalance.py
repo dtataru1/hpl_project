@@ -5,6 +5,8 @@ matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
+
+## TODO end implementation heat balance
 class HeatBalance():
     
     def __init__(self, monthlyHeatconsumption=None):
