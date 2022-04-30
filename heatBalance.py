@@ -9,10 +9,13 @@ from matplotlib.figure import Figure
 ## TODO end implementation heat balance
 class HeatBalanceMonth():
 
-    def __init_(self, solarGain, heaterGain, heatLoss):
+    def __init__(self, solarGain, heaterGain, heatLoss):
         self.solarGain = solarGain
-        self.heaterGain = solarGain
+        self.heaterGain = heaterGain
         self.heatLoss = heatLoss
+
+
+
 
 class HeatBalance():
     
@@ -22,7 +25,9 @@ class HeatBalance():
             self._defaultConsumption()
         
     def _defaultConsumption(self):
-        self.monthlyHeatconsumption = {'January' : 10, 'February' : 5, 'March' : 2}
+        self.monthlyHeatconsumption = {'January' : HeatBalanceMonth(2,5,7), 
+            'February' : HeatBalanceMonth(2,8,10), 
+            'March' : HeatBalanceMonth(2,4,6)}
 
 class HeatBalanceGraph(FigureCanvasQTAgg):
 
@@ -36,7 +41,20 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         consumption = heatBalance.monthlyHeatconsumption.values()
         labels = heatBalance.monthlyHeatconsumption.keys()
         indices =  np.arange(len(labels))
-        self.axs.bar(indices, consumption, color='red')
+        ### TO DO : use colorblind palette
+
+        solarGain = extract_gain(consumption, lambda h : h.solarGain)
+        heaterGain = extract_gain(consumption, lambda h : h.heaterGain)
+        heatLoss = extract_gain(consumption, lambda h : -h.heatLoss)
+
+
+        self.axs.bar(indices, heaterGain, color='red', label='chauffage')
+        self.axs.bar(indices, solarGain, bottom=heaterGain,color='green', label='gain solaire')
+        self.axs.bar(indices, heatLoss, color='blue', label='perte thermique')
         self.axs.set_xticks(indices)
         self.axs.set_xticklabels(labels)
+        self.axs.legend()
         self.draw()
+
+def extract_gain(ls, extract):
+    return list(map(extract, ls))
