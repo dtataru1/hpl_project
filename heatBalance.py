@@ -7,6 +7,13 @@ from matplotlib.figure import Figure
 
 
 ## TODO end implementation heat balance
+class HeatBalanceMonth():
+
+    def __init_(self, solarGain, heaterGain, heatLoss):
+        self.solarGain = solarGain
+        self.heaterGain = solarGain
+        self.heatLoss = heatLoss
+
 class HeatBalance():
     
     def __init__(self, monthlyHeatconsumption=None):
