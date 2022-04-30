@@ -15,8 +15,6 @@ class HeatBalanceMonth():
         self.heatLoss = heatLoss
 
 
-
-
 class HeatBalance():
     
     def __init__(self, monthlyHeatconsumption=None):
@@ -41,16 +39,17 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         consumption = heatBalance.monthlyHeatconsumption.values()
         labels = heatBalance.monthlyHeatconsumption.keys()
         indices =  np.arange(len(labels))
-        ### TO DO : use colorblind palette
+        ### TO DO : use colorblind palette improve the pallete
+        ### TO DO : improve display
 
         solarGain = extract_gain(consumption, lambda h : h.solarGain)
         heaterGain = extract_gain(consumption, lambda h : h.heaterGain)
         heatLoss = extract_gain(consumption, lambda h : -h.heatLoss)
 
 
-        self.axs.bar(indices, heaterGain, color='red', label='chauffage')
-        self.axs.bar(indices, solarGain, bottom=heaterGain,color='green', label='gain solaire')
-        self.axs.bar(indices, heatLoss, color='blue', label='perte thermique')
+        self.axs.bar(indices, heaterGain, color='#ef4a5a', label='chauffage')
+        self.axs.bar(indices, solarGain, bottom=heaterGain,color='#ffd11c', label='gain solaire')
+        self.axs.bar(indices, heatLoss, color='#7e7e85', label='perte thermique')
         self.axs.set_xticks(indices)
         self.axs.set_xticklabels(labels)
         self.axs.legend()
