@@ -22,20 +22,41 @@ class ConductionModel():
         self.isolation = 0.1
         self.int_temp = 22.0
 
-    def read_data(self, data_file):
+    def read_data(self, temp_file, rad_file, angle_file):
         '''
-        Getting real-world data from csv file (temperature)
+        Getting real-world data from csv file (temperature, solar direct radiation and angle to zenith)
         param data_file: Name of data file to read
         return T_out: vector of outside temperature (hourly)
         '''
-        T_file = open(data_file)
+        T_file = open(temp_file)
         T_csvreader = csv.reader(T_file)
         next(T_csvreader)
         T_out = []
         for row in T_csvreader:
             T_out.append(row)
         T_out = np.reshape(np.array(T_out, dtype=np.float32), len(T_out))
-        return T_out
+        T_file.close()
+
+        I_r_file = open(rad_file)
+        I_csvreader = csv.reader(I_r_file)
+        next(I_csvreader)
+        I_r = []
+        for row in I_csvreader:
+            I_r.append(row)
+        I_r = np.reshape(np.array(I_r, dtype=np.float32), len(I_r))
+        I_r_file.close()
+
+        sun_ang_file = open(angle_file)
+        angle_csvreader = csv.reader(sun_ang_file)
+        next(angle_csvreader)
+        sun_angle = []
+        for row in angle_csvreader:
+            sun_angle.append(row)
+        sun_angle = np.reshape(np.array(sun_angle, dtype=np.float32), len(sun_angle))
+        sun_ang_file.close()
+
+
+        return T_out, I_r, sun_angle
 
 
 
@@ -46,8 +67,10 @@ class ConductionModel():
         :param size: window size
         :return: HeatBalance (object describing heat balance of the buidling)
         """
-        ## TODO add correct implemetation
-        return HeatBalance()
+        self.size = size
+        heat_calculations = self.compute_heat_balance()
+
+        return heat_calculations
         
 
     def update_isolation(self, width : int ):
@@ -58,26 +81,7 @@ class ConductionModel():
         :return: HeatBalance (object describing heat balance of the buidling)
         """
         self.isolation = width
-
-        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        month_temp_idx = [1, 745, 1415, 2161, 2881, 3625, 4345, 5089, 5833, 6553, 7297, 8017, 8760]
-        heat_calculations = {}
-
-        T_out = self.read_data('Temp_Data_Basel_2021.csv')
-        A_wall = 40 - self.size # m^2, Wall surface area in contact with outside
-        J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
-        Th_cond_wall = 1.75  # W/m/K, concrecte wall themrla Conductivity
-        Th_cond_window = 1.3
-        e_window= 0.05
-        timestep = 60*60 #1-hour
-
-        for i in range(0, len(months)-1):
-            Q_loss = Th_cond_wall/self.isolation * A_wall * (T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp) + Th_cond_window/e_window * self.size *(T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp)
-            E_loss = 0
-            for j in range (0, len(Q_loss)-1):
-                 E_loss = E_loss+(Q_loss[j]+Q_loss[j+1])/2 * timestep
-            E_loss *= J2kwh
-            heat_calculations[months[i]] = HeatBalanceMonth(0,0,E_loss)
+        heat_calculations = self.compute_heat_balance()
 
         return heat_calculations
 
@@ -88,17 +92,71 @@ class ConductionModel():
         :param size: building orientation
         :return: HeatBalance (object describing heat balance of the buidling)
         """
-        return HeatBalance()
+        self.degree = degree
+        heat_calculations = self.compute_heat_balance()
+
+        return heat_calculations
 
     def compute_heat_balance(self):
 
 
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        month_temp_idx = [1, 745, 1415, 2161, 2881, 3625, 4345, 5089, 5833, 6553, 7297, 8017, 8760]
+        heat_calculations = {}
 
-        heat_calculations[months[i]] = HeatBalanceMonth(0,0,E_loss)
-        return 
+        A_wall = 40 - self.size # m^2, Wall surface area in contact with outside
+        A_wall_exposed = A_wall/4 * math.cos(self.degree) + A_wall/4 * math.sin(self.degree)
+        A_wind_exposed = self.size/4 * math.cos(self.degree) + A_wall/4 * math.sin(self.degree)
+        T_out, I_r, sun_angle = self.read_data('Temp_Data_Basel.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
+        #Solar Radiation through window
+
+        z = 0.68 # Shading coefficient
+        ws = 1 #Radiation transmittance coefficient
+        #Solar radiation absorbed by outer wall
+
+        Eps_s = 0.6
+
+        #Conduction
+        J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
+        Th_cond_wall = 1.75  # W/m/K, concrecte wall themrla Conductivity
+        Th_cond_window = 1.3
+        e_window= 0.05
+        timestep = 60*60 #1-hour
+
+        for i in range(0, len(months)-1):
+            Q_loss = Th_cond_wall/self.isolation * A_wall * (T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp) + Th_cond_window/e_window * self.size *(T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp)
+            
+            
+            Q_sun = abs(np.multiply(z*ws*I_r[month_temp_idx[i]:month_temp_idx[i+1]],np.cos(sun_angle[month_temp_idx[i]:month_temp_idx[i+1]])*A_wind_exposed))
+            Q_wall = abs(np.multiply(Eps_s * A_wall_exposed*I_r[month_temp_idx[i]:month_temp_idx[i+1]], np.cos(sun_angle[month_temp_idx[i]:month_temp_idx[i+1]])))
+
+            E_loss_cond = 0
+            E_sun = 0
+            for j in range (0, len(Q_loss)-1):
+                E_loss_cond = E_loss_cond+(Q_loss[j]+Q_loss[j+1])/2 * timestep
+                E_sun = E_sun + (Q_sun[j]+Q_sun[j+1]+ Q_wall[j]+Q_wall[j+1])/2 * timestep
+            E_loss_cond *= J2kwh
+            E_sun  *= J2kwh
+            print()
+            E_heat = -(E_sun +  E_loss_cond)
+            heat_calculations[months[i]] = HeatBalanceMonth(E_sun,E_heat,E_loss_cond)
+        
+        return heat_calculations
 
 
 test = ConductionModel()
 
 values = test.update_isolation(0.3)
-print(values['Jul'].heatLoss)
+print(values['Jan'].solarGain)
+print(values['Jan'].heatLoss)
+print(values['Jan'].heaterGain)
+
+print(values['Jun'].solarGain)
+print(values['Jun'].heatLoss)
+print(values['Jun'].heaterGain)
+
+
+print(values['Sep'].solarGain)
+print(values['Sep'].heatLoss)
+print(values['Sep'].heaterGain)
+
