@@ -21,53 +21,104 @@ from matplotlib.figure import Figure
 matplotlib.use('Qt5Agg')
 
 
-
 class MplCanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111, ybound=(-1000,0))
+        self.axes = fig.add_subplot(111, ybound=(-1000, 0))
         super(MplCanvas, self).__init__(fig)
 
 
 class Ui_Form(object):
+
     def setupUi(self, Form, graph):
         Form.setObjectName("Form")
-        Form.resize(1000, 600)
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setGeometry(QtCore.QRect(10, 10, 91, 31))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setGeometry(QtCore.QRect(10, 40, 61, 21))
-        self.label_2.setObjectName("label_2")
-        self.horizontalSlider = QtWidgets.QSlider(Form)
-        self.horizontalSlider.setGeometry(QtCore.QRect(10, 60, 160, 21))
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
-        self.label_3 = QtWidgets.QLabel(Form)
-        self.label_3.setGeometry(QtCore.QRect(10, 100, 81, 21))
-        self.label_3.setObjectName("label_3")
-        self.horizontalSlider_2 = QtWidgets.QSlider(Form)
-        self.horizontalSlider_2.setGeometry(QtCore.QRect(10, 120, 160, 21))
-        self.horizontalSlider_2.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider_2.setObjectName("horizontalSlider_2")
-        self.label_4 = QtWidgets.QLabel(Form)
-        self.label_4.setGeometry(QtCore.QRect(10, 160, 101, 21))
-        self.label_4.setObjectName("label_4")
-        self.dial = QtWidgets.QDial(Form)
-        self.dial.setGeometry(QtCore.QRect(50, 183, 71, 81))
-        self.dial.setMaximum(359)
-        self.dial.setPageStep(10)
-        self.dial.setWrapping(True)
-        self.dial.setNotchesVisible(True)
-        self.dial.setObjectName("dial")
+        Form.resize(1920, 1080)
+        # PARAMETERS
+        self.label_parameters = QtWidgets.QLabel(Form)
+        self.label_parameters.setGeometry(QtCore.QRect(10, 10, 161, 31))
+        self.label_parameters.setObjectName("label_parameters")
 
+        # Isolation
+        self.label_isolation = QtWidgets.QLabel(Form)
+        self.label_isolation.setGeometry(QtCore.QRect(10, 40, 201, 51))
+        self.label_isolation.setObjectName("label_isolation")
+
+        self.slider_isolation = QtWidgets.QSlider(Form)
+        self.slider_isolation.setGeometry(QtCore.QRect(10, 90, 161, 21))
+        self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
+        self.slider_isolation.setObjectName("slider_isolation")
+
+        # Windows
+        self.label_windows = QtWidgets.QLabel(Form)
+        self.label_windows.setGeometry(QtCore.QRect(10, 140, 201, 51))
+        self.label_windows.setObjectName("label_windows")
+
+        self.slider_windows = QtWidgets.QSlider(Form)
+        self.slider_windows.setGeometry(QtCore.QRect(10, 180, 161, 21))
+        self.slider_windows.setOrientation(QtCore.Qt.Horizontal)
+        self.slider_windows.setObjectName("slider_windows")
+
+        # Orientation
+        self.label_orientation = QtWidgets.QLabel(Form)
+        self.label_orientation.setGeometry(QtCore.QRect(10, 230, 201, 51))
+        self.label_orientation.setObjectName("label_orientation")
+
+        self.dial_orientation = QtWidgets.QDial(Form)
+        self.dial_orientation.setGeometry(QtCore.QRect(80, 310, 71, 71))
+        self.dial_orientation.setObjectName("dial_orientation")
+
+        self.label_north = QtWidgets.QLabel(Form)
+        self.label_north.setGeometry(QtCore.QRect(80, 280, 71, 31))
+        self.label_north.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_north.setObjectName("label_windows_2")
+
+        self.label_south = QtWidgets.QLabel(Form)
+        self.label_south.setGeometry(QtCore.QRect(80, 380, 71, 31))
+        self.label_south.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_south.setObjectName("label_south")
+
+        self.label_west = QtWidgets.QLabel(Form)
+        self.label_west.setGeometry(QtCore.QRect(-10, 330, 81, 31))
+        self.label_west.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_west.setObjectName("label_west")
+
+        self.label_east = QtWidgets.QLabel(Form)
+        self.label_east.setGeometry(QtCore.QRect(160, 330, 31, 31))
+        self.label_east.setObjectName("label_east")
+
+        # Placeholder for graph
         self.widget = QtWidgets.QWidget(Form)
-        self.widget.setGeometry(100,0,900,600)
+        self.widget.setGeometry(400, 300, 1280, 720)
         layout = QtWidgets.QVBoxLayout(self.widget)
 
+        # Graph object
         self.canvas = graph
-        self.canvas.setGeometry(QtCore.QRect(200, 10, 431, 251))
+        layout.addWidget(self.canvas)
+        # self.canvas.setGeometry(QtCore.QRect(200, 0, 900, 600))
+
+        # Text object: questions, explanations, etc.
+        self.prompt_text = QtWidgets.QLabel(Form)
+        self.prompt_text.setGeometry(QtCore.QRect(400, 100, 1280, 250))
+        self.prompt_text.setObjectName("prompt_text")
+        self.prompt_text.setAlignment(QtCore.Qt.AlignHCenter)
+        self.prompt_text.setWordWrap(True)
+
+        text = open('prompts.txt', 'r')
+        self.initial_prompt = text.readline()
+        text.close()
+
+        # Previous prompt button
+        self.previous_button = QtWidgets.QToolButton(Form)
+        self.previous_button.setArrowType(QtCore.Qt.LeftArrow)
+        self.previous_button.setGeometry(QtCore.QRect(400, 40, 40, 40))
+        self.previous_button.setObjectName("previous_button")
+
+        # Next prompt button
+        self.next_button = QtWidgets.QToolButton(Form)
+        self.next_button.setArrowType(QtCore.Qt.RightArrow)
+        self.next_button.setGeometry(QtCore.QRect(450, 40, 40, 40))
+        self.next_button.setObjectName("next_button")
 
         # self.canvas.xdata = np.linspace(1,14,14)
         # self.canvas.ydata = np.zeros(14)
@@ -75,17 +126,15 @@ class Ui_Form(object):
         # self.window = 0
         # self.isolation = 0
         # self.orientation = 0
-        #self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state))
-        #self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
-        #self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
-
-
-        layout.addWidget(self.canvas)
+        # self.horizontalSlider.valueChanged['int'].connect(lambda state: self.update_plot(state))
+        # self.horizontalSlider_2.valueChanged['int'].connect(lambda state: self.update_plot(state,1))
+        # self.dial.valueChanged['int'].connect(lambda state: self.update_plot(state,2))
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
-        return self.horizontalSlider, self.horizontalSlider_2, self.dial
+        return self.slider_windows, self.slider_isolation, self.dial_orientation, self.previous_button, self.next_button, \
+               self.prompt_text
 
     # def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
     #     U_wall = Th_cond_wall / e_wall
@@ -132,7 +181,7 @@ class Ui_Form(object):
     #     self.canvas.axes.set_ybound(-1000, 0)
     #     self.canvas.draw()
 
-    #def update_plot(self,c,who):
+    # def update_plot(self,c,who):
     #    if who == 0:
     #        self.window = c
     #    if who == 1:
@@ -144,18 +193,21 @@ class Ui_Form(object):
     #    self.canvas.axes.cla()  # Clear the canvas.
     #    self.canvas.axes.plot(self.canvas.xdata, self.canvas.ydata, 'r')
     #    self.canvas.axes.set_ybound(-40, 40)
-            # Trigger the canvas to update and redraw.
+    # Trigger the canvas to update and redraw.
     #    self.canvas.draw()
-
-
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "PARAMETERS"))
-        self.label_2.setText(_translate("Form", "Windows"))
-        self.label_3.setText(_translate("Form", "Isolation"))
-        self.label_4.setText(_translate("Form", "Orientation"))
+        self.label_parameters.setText(_translate("Form", "PARAMETRES"))
+        self.label_isolation.setText(_translate("Form", "Largeur isolation"))
+        self.label_windows.setText(_translate("Form", "Surface vitrée"))
+        self.label_orientation.setText(_translate("Form", "Orientation"))
+        self.label_north.setText(_translate("Form", "N"))
+        self.label_south.setText(_translate("Form", "S"))
+        self.label_west.setText(_translate("Form", "O"))
+        self.label_east.setText(_translate("Form", "E"))
+        self.prompt_text.setText(_translate("Form", self.initial_prompt))
 
 
 class Window(QtWidgets.QMainWindow, Ui_Form):
