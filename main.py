@@ -14,7 +14,7 @@ if __name__ == "__main__":
     
     heat_balance_graph = HeatBalanceGraph()
     conduction_model = ConductionModel()
-
+    
     main_window = Window(heat_balance_graph, conduction_model) 
     heat_balance_graph.plot(HeatBalance())
     sys.exit(app.exec())
