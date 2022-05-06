@@ -38,9 +38,10 @@ class Window(QtWidgets.QMainWindow):
         self.previous_prompt.clicked.connect(self.backward_prompt)
         self.next_prompt.clicked.connect(self.forward_prompt)
         ## do not touch
-        self.window_slider.valueChanged['int'].connect(lambda x: self.update_window(x))
-        self.isolation_slider.valueChanged['int'].connect(lambda x: self.update_isolation(x))
-        self.orientation_dial.valueChanged['int'].connect(lambda x: self.update_orientation(x))
+        
+        self.window_slider.valueChanged['int'].connect(lambda x: self.update_window(x/self.window_slider.maximum()))
+        self.isolation_slider.valueChanged['int'].connect(lambda x: self.update_isolation(x/self.isolation_slider.maximum()))
+        self.orientation_dial.valueChanged['int'].connect(lambda x: self.update_orientation(360*x/self.orientation_dial.maximum()))
         self.show()
 
     def forward_prompt(self):
@@ -53,7 +54,7 @@ class Window(QtWidgets.QMainWindow):
             self.current_prompt -= 1
             self.prompt_text.setText(self.prompts[self.current_prompt])
 
-    def update_window(self, size: int):
+    def update_window(self, size: float):
         """
         update conduction model and UI when the window size is updated
         :param size: window size
@@ -61,7 +62,7 @@ class Window(QtWidgets.QMainWindow):
         heatBalance = self.conduction_model.update_window(size)
         self.graph.plot(heatBalance)
 
-    def update_isolation(self, size: int):
+    def update_isolation(self, size: float):
         """
         update conduction model and UI when the isolation width is updated
         :param size: isolation width
@@ -69,7 +70,7 @@ class Window(QtWidgets.QMainWindow):
         heatBalance = self.conduction_model.update_isolation(size)
         self.graph.plot(heatBalance)
 
-    def update_orientation(self, degree: int):
+    def update_orientation(self, degree: float):
         """
         update conduction model and UI when the building orientation is updated
         :param degree: building orientation
