@@ -19,7 +19,7 @@ class ConductionModel():
     def __init__(self):
         self.size = 0.0
         self.degree = 0.0
-        self.isolation = 0.1
+        self.isolation = 0.0
         self.int_temp = 22.0
 
     def read_data(self, temp_file, rad_file, angle_file):
@@ -53,6 +53,7 @@ class ConductionModel():
         for row in angle_csvreader:
             sun_angle.append(row)
         sun_angle = np.reshape(np.array(sun_angle, dtype=np.float32), len(sun_angle))
+        sun_angle = np.deg2rad(sun_angle)
         sun_ang_file.close()
 
 
@@ -104,10 +105,11 @@ class ConductionModel():
         month_temp_idx = [1, 745, 1415, 2161, 2881, 3625, 4345, 5089, 5833, 6553, 7297, 8017, 8760]
         heat_calculations = {}
 
-        A_wall = 40 - self.size # m^2, Wall surface area in contact with outside
-        A_wall_exposed = A_wall/4 * math.cos(self.degree) + A_wall/4 * math.sin(self.degree)
-        A_wind_exposed = self.size/4 * math.cos(self.degree) + A_wall/4 * math.sin(self.degree)
-        T_out, I_r, sun_angle = self.read_data('Temp_Data_Basel.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
+        A_wall = (1-self.size)*100 # m^2, Wall surface area in contact with outside
+        A_wind = 100*self.size
+        A_wall_exposed = A_wall/4 * math.cos(np.deg2rad(self.degree)) + A_wall/4 * math.sin(np.deg2rad(self.degree))
+        A_wind_exposed = A_wind/4 * math.cos(np.deg2rad(self.degree)) + A_wall/4 * math.sin(np.deg2rad(self.degree))
+        T_out, I_r, sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
         #Solar Radiation through window
 
         z = 0.68 # Shading coefficient
@@ -118,45 +120,26 @@ class ConductionModel():
 
         #Conduction
         J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
-        Th_cond_wall = 1.75  # W/m/K, concrecte wall themrla Conductivity
-        Th_cond_window = 1.3
-        e_window= 0.05
+        Th_cond_wall = 1.2  # W/m/K, concrecte wall themrla Conductivity
+        Th_cond_window = 0.7
+        e_window= 0.1
         timestep = 60*60 #1-hour
+        air_coeff = 3
 
-        for i in range(0, len(months)-1):
-            Q_loss = Th_cond_wall/self.isolation * A_wall * (T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp) + Th_cond_window/e_window * self.size *(T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp)
-            
-            
-            Q_sun = abs(np.multiply(z*ws*I_r[month_temp_idx[i]:month_temp_idx[i+1]],np.cos(sun_angle[month_temp_idx[i]:month_temp_idx[i+1]])*A_wind_exposed))
+        for i in range(0, len(months)):
+
             Q_wall = abs(np.multiply(Eps_s * A_wall_exposed*I_r[month_temp_idx[i]:month_temp_idx[i+1]], np.cos(sun_angle[month_temp_idx[i]:month_temp_idx[i+1]])))
-
+            T_we = np.divide(Q_wall+Th_cond_wall/self.isolation * A_wall * self.int_temp + air_coeff*A_wall*T_out[month_temp_idx[i]:month_temp_idx[i+1]], Th_cond_wall/self.isolation * A_wall+air_coeff*A_wall)
+            #Q_loss = Th_cond_wall/self.isolation * A_wall * (T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp) + Th_cond_window/e_window * A_wind *(T_out[month_temp_idx[i]:month_temp_idx[i+1]] - self.int_temp)
+            Q_loss = Th_cond_wall/self.isolation * A_wall * (T_we - self.int_temp) + Th_cond_window/e_window * A_wind *(T_we - self.int_temp)
+            Q_sun = abs(np.multiply(z*ws*I_r[month_temp_idx[i]:month_temp_idx[i+1]],np.cos(sun_angle[month_temp_idx[i]:month_temp_idx[i+1]])*A_wind_exposed))
             E_loss_cond = 0
             E_sun = 0
             for j in range (0, len(Q_loss)-1):
                 E_loss_cond = E_loss_cond+(Q_loss[j]+Q_loss[j+1])/2 * timestep
-                E_sun = E_sun + (Q_sun[j]+Q_sun[j+1]+ Q_wall[j]+Q_wall[j+1])/2 * timestep
+                E_sun = E_sun + (Q_sun[j]+Q_sun[j+1])/2 * timestep
             E_loss_cond *= J2kwh
             E_sun  *= J2kwh
-            #print()
-            E_heat = -(E_sun +  E_loss_cond)
-            heat_calculations[months[i]] = HeatBalanceMonth(E_sun,E_heat,E_loss_cond)
-        
+            E_heat = -(E_loss_cond+E_sun)
+            heat_calculations[months[i]] = HeatBalanceMonth(E_sun/100.0,E_heat/100.0,E_loss_cond/100.0)
         return HeatBalance(heat_calculations)
-
-'''
-test = ConductionModel()
-
-values = test.update_isolation(0.3)
-print(values['Jan'].solarGain)
-print(values['Jan'].heatLoss)
-print(values['Jan'].heaterGain)
-
-print(values['Jun'].solarGain)
-print(values['Jun'].heatLoss)
-print(values['Jun'].heaterGain)
-
-
-print(values['Sep'].solarGain)
-print(values['Sep'].heatLoss)
-print(values['Sep'].heaterGain)
-'''
