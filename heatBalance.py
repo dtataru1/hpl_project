@@ -42,11 +42,9 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         indices =  np.arange(len(labels))
         ### TO DO : use colorblind palette improve the pallete
         ### TO DO : improve display
-
         solarGain = extract_gain(consumption, lambda h : h.solarGain)
         heaterGain = extract_gain(consumption, lambda h : h.heaterGain)
         heatLoss = extract_gain(consumption, lambda h : -h.heatLoss)
-
 
         self.axs.bar(indices, heaterGain, color='#ef4a5a', label='chauffage')
         self.axs.bar(indices, solarGain, bottom=heaterGain,color='#ffd11c', label='gain solaire')

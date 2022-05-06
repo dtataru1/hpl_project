@@ -47,6 +47,7 @@ class Ui_Form(object):
         self.slider_isolation = QtWidgets.QSlider(Form)
         self.slider_isolation.setGeometry(QtCore.QRect(10, 90, 161, 21))
         self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
+        self.slider_isolation.setMinimum(1)
         self.slider_isolation.setObjectName("slider_isolation")
 
         # Windows

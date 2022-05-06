@@ -137,13 +137,13 @@ class ConductionModel():
                 E_sun = E_sun + (Q_sun[j]+Q_sun[j+1]+ Q_wall[j]+Q_wall[j+1])/2 * timestep
             E_loss_cond *= J2kwh
             E_sun  *= J2kwh
-            print()
+            #print()
             E_heat = -(E_sun +  E_loss_cond)
             heat_calculations[months[i]] = HeatBalanceMonth(E_sun,E_heat,E_loss_cond)
         
-        return heat_calculations
+        return HeatBalance(heat_calculations)
 
-
+'''
 test = ConductionModel()
 
 values = test.update_isolation(0.3)
@@ -159,4 +159,4 @@ print(values['Jun'].heaterGain)
 print(values['Sep'].solarGain)
 print(values['Sep'].heatLoss)
 print(values['Sep'].heaterGain)
-
+'''
