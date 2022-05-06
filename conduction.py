@@ -141,20 +141,8 @@ class ConductionModel():
             E_loss_cond *= J2kwh
             E_sun  *= J2kwh
             E_heat = -(E_loss_cond+E_sun)
-            heat_calculations[months[i]] = HeatBalanceMonth(E_sun,E_heat,E_loss_cond)
+            heat_calculations[months[i]] = HeatBalanceMonth(E_sun/100.0,E_heat/100.0,E_loss_cond/100.0)
             print('E_heat=',E_heat, 'E_sun=', E_sun, 'E_loss_cond=',E_loss_cond)
             
         print('#########') 
         return HeatBalance(heat_calculations)
-
-test = ConductionModel()
-test.update_isolation(0.1)
-test.update_isolation(0.2)
-test.update_isolation(0.3)
-test.update_window(0)
-test.update_isolation(0.4)
-test.update_isolation(0.5)
-test.update_isolation(0.6)
-test.update_isolation(0.7)
-test.update_isolation(0.8)
-test.update_isolation(0.9)
