@@ -58,10 +58,10 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         airCooling = extract_gain(consumption, lambda h : min(0,h.heaterGain))
         heatLoss = extract_gain(consumption, lambda h : h.heatLoss)
 
-        tot_heatLoss = [-sum(heatLoss)]
+        tot_heatLoss = [sum(heaterGain)]
         tot_aircooling = [-sum(airCooling)]
         self.axsTot.bar([1],tot_aircooling, color='#3ec1c3')
-        self.axsTot.bar([1],tot_heatLoss, bottom=tot_aircooling, color='#7e7e85')
+        self.axsTot.bar([1],tot_heatLoss, bottom=tot_aircooling, color='#ef4a5a')
         self.axsTot.set_title('consomation annuel')
         self.axsTot.plot([0.5, 1.5], [149, 149], color='black', label='consomation moyenne')
         self.axsTot.plot([0.5, 1.5], [41, 41], color='#a2c616', label='minergie')
