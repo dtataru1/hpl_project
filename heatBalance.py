@@ -42,13 +42,17 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         indices =  np.arange(len(labels))
         ### TO DO : use colorblind palette improve the pallete
         ### TO DO : improve display
+      
+      
         solarGain = extract_gain(consumption, lambda h : h.solarGain)
-        heaterGain = extract_gain(consumption, lambda h : h.heaterGain)
-        heatLoss = extract_gain(consumption, lambda h : -h.heatLoss)
+        heaterGain = extract_gain(consumption, lambda h : max(0,h.heaterGain))
+        airCooling = extract_gain(consumption, lambda h : min(0,h.heaterGain))
+        heatLoss = extract_gain(consumption, lambda h : h.heatLoss)
 
         self.axs.bar(indices, heaterGain, color='#ef4a5a', label='chauffage')
         self.axs.bar(indices, solarGain, bottom=heaterGain,color='#ffd11c', label='gain solaire')
-        self.axs.bar(indices, heatLoss, color='#7e7e85', label='perte thermique')
+        self.axs.bar(indices, airCooling,color='#3ec1c3', label='climatisation')
+        self.axs.bar(indices, heatLoss, bottom=airCooling, color='#7e7e85', label='perte thermique')
         self.axs.set_xticks(indices)
         self.axs.set_xticklabels(labels)
         self.axs.legend()
