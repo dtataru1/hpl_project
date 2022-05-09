@@ -17,7 +17,7 @@ class ConductionModel():
     compute the heat balance of a building
     """
     def __init__(self):
-        self.size = 0.0
+        self.size = 0.1
         self.degree = 0.0
         self.isolation = 0.0
         self.int_temp = 22.0
