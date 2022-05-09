@@ -53,13 +53,17 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         ### TO DO : improve display
       
       
-        solarGain = extract_gain(consumption, lambda h : h.solarGain)
+        solarGain = extract_gain(consumption, lambda h : h.solarGain+max(0,h.heatLoss))
         heaterGain = extract_gain(consumption, lambda h : max(0,h.heaterGain))
         airCooling = extract_gain(consumption, lambda h : min(0,h.heaterGain))
-        heatLoss = extract_gain(consumption, lambda h : h.heatLoss)
+        heatLoss = extract_gain(consumption, lambda h : min(0,h.heatLoss))
+
+       
+       
 
         tot_heatLoss = [sum(heaterGain)]
         tot_aircooling = [-sum(airCooling)]
+
         self.axsTot.bar([1],tot_aircooling, color='#3ec1c3')
         self.axsTot.bar([1],tot_heatLoss, bottom=tot_aircooling, color='#ef4a5a')
         self.axsTot.set_title('consomation annuel')
@@ -67,6 +71,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         self.axsTot.plot([0.5, 1.5], [41, 41], color='#a2c616', label='minergie')
         self.remove_frames(self.axsTot)
         self.axsTot.set_xticks([])
+        self.axsTot.set_ylim([0,250])
         self.axsTot.legend()
 
 
@@ -78,6 +83,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
 
         self.axsMonths.set_xticks(indices)
         self.axsMonths.set_xticklabels(labels)
+        self.axsMonths.set_ylim([-40,40])
         self.axsMonths.set_title('consomation par mois')
         self.axsMonths.legend()
 

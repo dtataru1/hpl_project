@@ -19,7 +19,7 @@ class ConductionModel():
     def __init__(self):
         self.size = 0.0
         self.degree = 0.0
-        self.isolation = 0.0
+        self.isolation = 0.001
         self.int_temp = 22.0
 
     def read_data(self, temp_file, rad_file, angle_file):
