@@ -31,9 +31,11 @@ class MplCanvas(FigureCanvas):
 
 class Ui_Form(object):
 
-    def setupUi(self, Form, graph):
+    def setupUi(self, Form, graph, size):
         Form.setObjectName("Form")
-        Form.resize(1920, 1080)
+        width = size.width()
+        height = size.height()
+        Form.resize(width, height)
         # PARAMETERS
         self.label_parameters = QtWidgets.QLabel(Form)
         self.label_parameters.setGeometry(QtCore.QRect(10, 10, 161, 31))

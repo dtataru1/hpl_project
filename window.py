@@ -9,7 +9,7 @@ class Window(QtWidgets.QMainWindow):
         Window main window of our application
     """
 
-    def __init__(self, graph, conduction_model, parent=None):
+    def __init__(self, graph, conduction_model, size, parent=None):
         """
         Construct the main window.
         Initialize all visual components
@@ -33,7 +33,7 @@ class Window(QtWidgets.QMainWindow):
         ## we shall always return the controlls buttons
 
         self.window_slider, self.isolation_slider, self.orientation_dial, self.previous_prompt, self.next_prompt, \
-        self.prompt_text = Ui_Form().setupUi(self, graph)
+        self.prompt_text = Ui_Form().setupUi(self, graph, size)
 
         self.previous_prompt.clicked.connect(self.backward_prompt)
         self.next_prompt.clicked.connect(self.forward_prompt)
