@@ -36,60 +36,72 @@ class Ui_Form(object):
         width = size.width()
         height = size.height()
         Form.resize(width, height)
+
+        margin = width / 50
+        vskip = height/36
         # PARAMETERS
-        margin = width/100
+
         self.label_parameters = QtWidgets.QLabel(Form)
         self.label_parameters.setGeometry(QtCore.QRect(margin, margin, width/4, 20))
         self.label_parameters.setObjectName("label_parameters")
 
         # Isolation
         self.label_isolation = QtWidgets.QLabel(Form)
-        self.label_isolation.setGeometry(QtCore.QRect(margin, margin + 50, width/4, 30))
+        self.label_isolation.setGeometry(QtCore.QRect(margin, margin + 2*vskip, width/4, 30))
         self.label_isolation.setObjectName("label_isolation")
 
         self.slider_isolation = QtWidgets.QSlider(Form)
-        self.slider_isolation.setGeometry(QtCore.QRect(margin, margin + 100, width/4, 30))
+        self.slider_isolation.setGeometry(QtCore.QRect(margin, margin + 3*vskip, width/4-3*vskip, 30))
         self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
         self.slider_isolation.setMinimum(1)
         self.slider_isolation.setObjectName("slider_isolation")
 
+        self.isolation_print = QtWidgets.QLabel(Form)
+        self.isolation_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 3*vskip, 3*vskip, 30))
+        self.isolation_print.setObjectName("isolation_print")
+
         # Windows
         self.label_windows = QtWidgets.QLabel(Form)
-        self.label_windows.setGeometry(QtCore.QRect(margin, margin + 150, width/4, 30))
+        self.label_windows.setGeometry(QtCore.QRect(margin, margin + 5*vskip, width/4, 30))
         self.label_windows.setObjectName("label_windows")
 
         self.slider_windows = QtWidgets.QSlider(Form)
-        self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 200, width/4, 30))
+        self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 6*vskip, width/4-3*vskip, 30))
         self.slider_windows.setOrientation(QtCore.Qt.Horizontal)
         self.slider_windows.setObjectName("slider_windows")
 
+        self.windows_print = QtWidgets.QLabel(Form)
+        self.windows_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 6*vskip, 3*vskip, 30))
+        self.windows_print.setObjectName("isolation_print")
+
         # Orientation
         self.label_orientation = QtWidgets.QLabel(Form)
-        self.label_orientation.setGeometry(QtCore.QRect(margin, margin + 250, width/4, 30))
+        self.label_orientation.setGeometry(QtCore.QRect(margin, margin + 8*vskip, width/4, 30))
         self.label_orientation.setObjectName("label_orientation")
 
         self.dial_orientation = QtWidgets.QDial(Form)
         self.dial_orientation.setWrapping(True)
-        self.dial_orientation.setGeometry(QtCore.QRect(margin + width/12, margin + 300, width/12, width/12))
+        self.dial_orientation.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip, width/12, width/12))
         self.dial_orientation.setObjectName("dial_orientation")
 
         self.label_north = QtWidgets.QLabel(Form)
-        self.label_north.setGeometry(QtCore.QRect(margin + width/12, margin + 270, width/12, 30))
+        self.label_north.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip-30, width/12, 30))
         self.label_north.setAlignment(QtCore.Qt.AlignCenter)
         self.label_north.setObjectName("label_windows_2")
 
         self.label_south = QtWidgets.QLabel(Form)
-        self.label_south.setGeometry(QtCore.QRect(margin + width/12, 300 + width/12 + 30, width/12, 30))
+        self.label_south.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip-30 + width/12 + 30, width/12, 30))
         self.label_south.setAlignment(QtCore.Qt.AlignCenter)
         self.label_south.setObjectName("label_south")
 
         self.label_west = QtWidgets.QLabel(Form)
-        self.label_west.setGeometry(QtCore.QRect(margin + width/12 - 30, 300 + width/24, 30, 30))
-        self.label_west.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_west.setGeometry(QtCore.QRect(margin + width/12 - 30, margin + 9*vskip, 30, width/12))
+        self.label_west.setAlignment(QtCore.Qt.AlignCenter)
         self.label_west.setObjectName("label_west")
 
         self.label_east = QtWidgets.QLabel(Form)
-        self.label_east.setGeometry(QtCore.QRect(margin + 2*width/12 + 30, 300 + width/24, 30, 30))
+        self.label_east.setGeometry(QtCore.QRect(margin + 2*width/12, margin + 9*vskip, 30, width/12))
+        self.label_east.setAlignment(QtCore.Qt.AlignCenter)
 
         self.label_east.setObjectName("label_east")
 
@@ -109,6 +121,7 @@ class Ui_Form(object):
         self.prompt_text.setObjectName("prompt_text")
         self.prompt_text.setAlignment(QtCore.Qt.AlignHCenter)
         self.prompt_text.setWordWrap(True)
+        self.prompt_text.setStyleSheet("border: 1px solid black; padding: 20px;")
 
         text = open('prompts.txt', 'r')
         self.initial_prompt = text.readline()
@@ -140,7 +153,7 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         return self.slider_windows, self.slider_isolation, self.dial_orientation, self.previous_button, self.next_button, \
-               self.prompt_text
+               self.prompt_text, self.isolation_print, self.windows_print
 
     # def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
     #     U_wall = Th_cond_wall / e_wall
@@ -214,6 +227,8 @@ class Ui_Form(object):
         self.label_west.setText(_translate("Form", "O"))
         self.label_east.setText(_translate("Form", "E"))
         self.prompt_text.setText(_translate("Form", self.initial_prompt))
+        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value()/100} m"))
+        self.windows_print.setText(_translate("Form", f"{self.slider_windows.value()} %"))
 
 
 class Window(QtWidgets.QMainWindow, Ui_Form):

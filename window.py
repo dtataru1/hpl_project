@@ -33,7 +33,7 @@ class Window(QtWidgets.QMainWindow):
         ## we shall always return the controlls buttons
 
         self.window_slider, self.isolation_slider, self.orientation_dial, self.previous_prompt, self.next_prompt, \
-        self.prompt_text = Ui_Form().setupUi(self, graph, size)
+        self.prompt_text, self.isolation_print, self.windows_print = Ui_Form().setupUi(self, graph, size)
 
         self.previous_prompt.clicked.connect(self.backward_prompt)
         self.next_prompt.clicked.connect(self.forward_prompt)
@@ -59,6 +59,7 @@ class Window(QtWidgets.QMainWindow):
         update conduction model and UI when the window size is updated
         :param size: window size
         """
+        self.windows_print.setText("%.0f %%" % (size*100))
         heatBalance = self.conduction_model.update_window(size)
         self.graph.plot(heatBalance)
 
@@ -67,6 +68,7 @@ class Window(QtWidgets.QMainWindow):
         update conduction model and UI when the isolation width is updated
         :param size: isolation width
         """
+        self.isolation_print.setText("%.2f m" % size)
         heatBalance = self.conduction_model.update_isolation(size)
         self.graph.plot(heatBalance)
 
