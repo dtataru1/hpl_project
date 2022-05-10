@@ -19,11 +19,10 @@ class ConductionModel():
     def __init__(self):
         self.size = 0.00
         self.degree = 0.0
-
         self.isolation = 0.001
-
         self.int_temp = 22.0
-
+        self.T_out, self.I_r, self.sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
+        
     def read_data(self, temp_file, rad_file, angle_file):
         '''
         Getting real-world data from csv file (temperature, solar direct radiation and angle to zenith)
@@ -110,10 +109,12 @@ class ConductionModel():
         A_wall = (1-self.size)*100 # m^2, Wall surface area in contact with outside
         A_wind = 100*self.size
         A_wall_exposed = A_wall/4 * math.cos(np.deg2rad(self.degree)) + A_wall/4 * math.sin(np.deg2rad(self.degree))
-        A_wind_exposed = A_wind/4 * math.cos(np.deg2rad(self.degree)) + A_wall/4 * math.sin(np.deg2rad(self.degree))
-        T_out, I_r, sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
+        A_wind_exposed = A_wind/4 * math.cos(np.deg2rad(self.degree)) + A_wind/4 * math.sin(np.deg2rad(self.degree))
+        #T_out, I_r, sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
         #Solar Radiation through window
-
+        T_out = self.T_out
+        I_r = self.I_r
+        sun_angle = self.sun_angle
         z = 0.68 # Shading coefficient
         ws = 1 #Radiation transmittance coefficient
         #Solar radiation absorbed by outer wall
