@@ -123,7 +123,7 @@ class Ui_Form(object):
         self.prompt_text.setWordWrap(True)
         self.prompt_text.setStyleSheet("border: 1px solid black; padding: 20px;")
 
-        text = open('prompts.txt', 'r')
+        text = open('prompts.txt', 'r', encoding='utf-8')
         self.initial_prompt = text.readline()
         text.close()
 
@@ -138,6 +138,44 @@ class Ui_Form(object):
         self.next_button.setArrowType(QtCore.Qt.RightArrow)
         self.next_button.setGeometry(QtCore.QRect(2*margin + width/4 + width/40, margin, width/40, width/40))
         self.next_button.setObjectName("next_button")
+
+        # Theory buttons
+        self.theory_button_1 = QtWidgets.QToolButton(Form)
+        self.theory_button_1.setGeometry(QtCore.QRect(width/4 + 2*width/3 - 3*width/40, margin, width/40, width/40))
+        self.theory_button_1.setObjectName("theory_button_1")
+        self.theory_button_1.setText("1")
+
+        self.theory_button_2 = QtWidgets.QToolButton(Form)
+        self.theory_button_2.setGeometry(QtCore.QRect(margin + width/4 + 2*width/3 - 2*width/40, margin, width/40, width/40))
+        self.theory_button_2.setObjectName("theory_button_2")
+        self.theory_button_2.setText("2")
+
+        self.theory_button_3 = QtWidgets.QToolButton(Form)
+        self.theory_button_3.setGeometry(QtCore.QRect(2*margin + width/4 + 2*width/3 - width/40, margin, width/40, width/40))
+        self.theory_button_3.setObjectName("theory_button_3")
+        self.theory_button_3.setText("3")
+
+        # Theory displays
+        self.theory_1_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_1_box.setGeometry(QtCore.QRect((width-height*.8/1.41)/2,height*.1,height*.8/1.41,height*.8))
+        self.theory_1 = QtWidgets.QLabel(self.theory_1_box)
+        self.theory_1.setPixmap(QtGui.QPixmap("LM_Romeo_Tatti-1.png").scaledToHeight(height*.8))
+
+        self.theory_2_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_2_box.setGeometry(QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
+        self.theory_2 = QtWidgets.QLabel(self.theory_2_box)
+        self.theory_2.setPixmap(QtGui.QPixmap("CV_ingenieur-1.png").scaledToHeight(height * .8))
+
+        self.theory_3_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_3_box.setGeometry(
+            QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
+        self.theory_3 = QtWidgets.QLabel(self.theory_3_box)
+        self.theory_3.setPixmap(QtGui.QPixmap("HW1-08.png").scaledToHeight(height * .8))
+
+        # Connections
+        self.theory_button_1.clicked.connect(self.theory_1_box.open)
+        self.theory_button_2.clicked.connect(self.theory_2_box.open)
+        self.theory_button_3.clicked.connect(self.theory_3_box.open)
 
         # self.canvas.xdata = np.linspace(1,14,14)
         # self.canvas.ydata = np.zeros(14)

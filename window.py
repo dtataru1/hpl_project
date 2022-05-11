@@ -23,7 +23,7 @@ class Window(QtWidgets.QMainWindow):
         self.conduction_model = conduction_model
 
         # Prompts setup
-        text = open('prompts.txt', 'r')
+        text = open('prompts.txt', 'r', encoding='utf-8')
         self.prompts = text.readlines()
         text.close()
         self.prompts_count = len(self.prompts)
