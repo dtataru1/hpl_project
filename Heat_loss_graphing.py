@@ -55,6 +55,7 @@ class Ui_Form(object):
         self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
         self.slider_isolation.setMinimum(1)
         self.slider_isolation.setObjectName("slider_isolation")
+        self.slider_isolation.setDisabled(True)
 
         self.isolation_print = QtWidgets.QLabel(Form)
         self.isolation_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 3*vskip, 3*vskip, 30))
@@ -69,6 +70,7 @@ class Ui_Form(object):
         self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 6*vskip, width/4-3*vskip, 30))
         self.slider_windows.setOrientation(QtCore.Qt.Horizontal)
         self.slider_windows.setObjectName("slider_windows")
+        self.slider_windows.setDisabled(True)
 
         self.windows_print = QtWidgets.QLabel(Form)
         self.windows_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 6*vskip, 3*vskip, 30))
@@ -83,6 +85,7 @@ class Ui_Form(object):
         self.dial_orientation.setWrapping(True)
         self.dial_orientation.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip, width/12, width/12))
         self.dial_orientation.setObjectName("dial_orientation")
+        self.dial_orientation.setDisabled(True)
 
         self.label_north = QtWidgets.QLabel(Form)
         self.label_north.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip-30, width/12, 30))
@@ -119,7 +122,7 @@ class Ui_Form(object):
         self.prompt_text = QtWidgets.QLabel(Form)
         self.prompt_text.setGeometry(QtCore.QRect(2*margin + width/4, 2*margin + width/40, 2*width/3, height/6-width/40))
         self.prompt_text.setObjectName("prompt_text")
-        self.prompt_text.setAlignment(QtCore.Qt.AlignHCenter)
+        self.prompt_text.setAlignment(QtCore.Qt.AlignCenter)
         self.prompt_text.setWordWrap(True)
         self.prompt_text.setStyleSheet("border: 1px solid black; padding: 20px;")
 
@@ -174,8 +177,13 @@ class Ui_Form(object):
 
         # Connections
         self.theory_button_1.clicked.connect(self.theory_1_box.open)
+        self.theory_button_1.clicked.connect(lambda: self.slider_isolation.setDisabled(False))
+
         self.theory_button_2.clicked.connect(self.theory_2_box.open)
+        self.theory_button_2.clicked.connect(lambda: self.slider_windows.setDisabled(False))
+
         self.theory_button_3.clicked.connect(self.theory_3_box.open)
+        self.theory_button_3.clicked.connect(lambda: self.dial_orientation.setDisabled(False))
 
         # self.canvas.xdata = np.linspace(1,14,14)
         # self.canvas.ydata = np.zeros(14)

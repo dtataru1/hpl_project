@@ -1,4 +1,4 @@
-Bienvenue dans *INSERT PROGRAM NAME HERE*. Avant de commencer à utiliser ce programme, familiarisez-vous rapidement avec la théorie en cliquant le boutton 1 à droite ci-dessus. Une fois la théorie lue, vous pourrez étudier les effets de l'épaisseur d'isolation sur la balance thermique d'un bâtiment en déplaçant le curseur correspondant sur la gauche.
-Prompt 2
-Prompt 3
-Last prompt
+<p>Bienvenue dans *INSERT PROGRAM NAME HERE*. Avant de commencer à utiliser ce programme, familiarisez-vous rapidement avec la théorie en cliquant le boutton 1 à droite ci-dessus. Une fois la théorie lue, vous pourrez étudier les effets de l'épaisseur d'isolation sur la balance thermique d'un bâtiment en déplaçant le curseur correspondant sur la gauche.<\p> <br><\br> <p>Ensuite, vous pourrez passer à la prochaine section en cliquant sur la flèche ci-dessus.<\p>
+<p>Prompt 2<\p>
+<p>Prompt 3<\p>
+<p>Last prompt<\p>
