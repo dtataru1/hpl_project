@@ -2,6 +2,9 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtCore, QtWidgets
 from heatBalance import HeatBalance
 from Heat_loss_graphing import Ui_Form
+import numpy as np
+import pyqtgraph.opengl as gl
+import pyqtgraph as pg
 
 
 class Window(QtWidgets.QMainWindow):
@@ -33,7 +36,7 @@ class Window(QtWidgets.QMainWindow):
         ## we shall always return the controlls buttons
 
         self.window_slider, self.isolation_slider, self.orientation_dial, self.previous_prompt, self.next_prompt, \
-        self.prompt_text, self.isolation_print, self.windows_print = Ui_Form().setupUi(self, graph, size)
+        self.prompt_text, self.isolation_print, self.windows_print, self.image = Ui_Form().setupUi(self, graph, size)
 
         self.previous_prompt.clicked.connect(self.backward_prompt)
         self.next_prompt.clicked.connect(self.forward_prompt)
@@ -62,6 +65,7 @@ class Window(QtWidgets.QMainWindow):
         self.windows_print.setText("%.0f %%" % (size*100))
         heatBalance = self.conduction_model.update_window(size)
         self.graph.plot(heatBalance)
+        self.update_image(self.image, self.isolation_slider.value()/100, size)
 
     def update_isolation(self, size: float):
         """
@@ -71,6 +75,7 @@ class Window(QtWidgets.QMainWindow):
         self.isolation_print.setText("%.2f m" % size)
         heatBalance = self.conduction_model.update_isolation(size)
         self.graph.plot(heatBalance)
+        self.update_image(self.image, size, self.window_slider.value()/100)
 
     def update_orientation(self, degree: float):
         """
@@ -79,3 +84,44 @@ class Window(QtWidgets.QMainWindow):
         """
         heatBalance = self.conduction_model.update_orientation(degree)
         self.graph.plot(heatBalance)
+
+    def update_image(self, image, isolation_size, window_size):
+        # Clear image
+        image.clear()
+        c = pg.glColor(0, 0, 0, 100)
+        # Fixed frame
+        points_fixed = np.array([[1.8, 0, 1.5], [1.8, 0, -1.5], [-1.8, 0, -1.5], [-1.8, 0, 1.5], [1.8, 0, 1.5]])
+        fixed_frame = gl.GLLinePlotItem(pos=points_fixed, mode='line_strip', color=c, glOptions='translucent')
+        image.addItem(fixed_frame)
+
+        # Window frame
+        points_window = points_fixed * np.sqrt(window_size)
+        window_frame = gl.GLLinePlotItem(pos=points_window, mode='line_strip', color=c, glOptions='translucent')
+        image.addItem(window_frame)
+
+        # Depth
+        frame_depth_points = np.empty((8, 3))
+        frame_depth_points[0::2, ] = points_fixed[:4, ]
+        frame_depth_points[1::2, ] = points_fixed[:4, ] + isolation_size * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        frame_depth = gl.GLLinePlotItem(pos=frame_depth_points, mode='lines', color=c, glOptions='translucent')
+        image.addItem(frame_depth)
+
+        if window_size != 0:
+            window_depth_points = np.empty((8, 3))
+            window_depth_points[0::2, ] = points_window[:4, ]
+            window_depth_points[1::2, ] = points_window[:4, ] + isolation_size * np.array(
+                [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+            window_depth = gl.GLLinePlotItem(pos=window_depth_points, mode='lines', color=c, glOptions='translucent')
+            image.addItem(window_depth)
+
+        # Back frame
+        back_points = points_fixed + isolation_size * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        back_frame = gl.GLLinePlotItem(pos=back_points, mode='line_strip', color=c, glOptions='translucent')
+        image.addItem(back_frame)
+
+        back_window_points = points_window + isolation_size * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        back_window_frame = gl.GLLinePlotItem(pos=back_window_points, mode='line_strip', color=c, glOptions='translucent')
+        image.addItem(back_window_frame)

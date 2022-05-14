@@ -14,6 +14,8 @@ import matplotlib
 import numpy as np
 import csv
 from PyQt5 import QtCore, QtWidgets
+import pyqtgraph as pg
+import pyqtgraph.opengl as gl
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -185,6 +187,49 @@ class Ui_Form(object):
         self.theory_button_3.clicked.connect(self.theory_3_box.open)
         self.theory_button_3.clicked.connect(lambda: self.dial_orientation.setDisabled(False))
 
+
+        # Drawing stuff
+        self.image = gl.GLViewWidget(Form,'translucent')
+        self.image.setGeometry(QtCore.QRect(margin, height - width / 4 - margin, width / 4, width / 4))
+        self.image.setBackgroundColor(Form.palette().color(Form.backgroundRole()))
+        self.image.opts['fov'] *= .8
+        self.image.opts['distance'] *= .8
+        self.image.show()
+        c = pg.glColor(0,0,0,100)
+
+        # Fixed frame
+        points_fixed = np.array([[1.8,0,1.5],[1.8,0,-1.5],[-1.8,0,-1.5],[-1.8,0,1.5],[1.8,0,1.5]])
+        fixed_frame = gl.GLLinePlotItem(pos=points_fixed,mode='line_strip',color=c, glOptions='translucent')
+        self.image.addItem(fixed_frame)
+
+        # Window frame
+        points_window = points_fixed*(np.sqrt(self.slider_windows.value()/100))
+        window_frame = gl.GLLinePlotItem(pos=points_window,mode='line_strip',color=c, glOptions='translucent')
+        self.image.addItem(window_frame)
+
+        # Depth
+        frame_depth_points = np.empty((8,3))
+        frame_depth_points[0::2,] = points_fixed[:4,]
+        frame_depth_points[1::2,] = points_fixed[:4,] + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
+        frame_depth = gl.GLLinePlotItem(pos=frame_depth_points,mode='lines',color=c, glOptions='translucent')
+        self.image.addItem(frame_depth)
+
+        if self.slider_windows.value() != 0:
+            window_depth_points = np.empty((8,3))
+            window_depth_points[0::2,] = points_window[:4,]
+            window_depth_points[1::2,] = points_window[:4,] + (self.slider_isolation.value())*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
+            window_depth = gl.GLLinePlotItem(pos=window_depth_points,mode='lines',color=c, glOptions='translucent')
+            self.image.addItem(window_depth)
+
+        # Back frame
+        back_points = points_fixed + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
+        back_frame = gl.GLLinePlotItem(pos=back_points,mode='line_strip',color=c, glOptions='translucent')
+        self.image.addItem(back_frame)
+
+        back_window_points = points_window + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
+        back_window_frame = gl.GLLinePlotItem(pos=back_window_points,mode='line_strip',color=c, glOptions='translucent')
+        self.image.addItem(back_window_frame)
+
         # self.canvas.xdata = np.linspace(1,14,14)
         # self.canvas.ydata = np.zeros(14)
         # self.canvas.show()
@@ -199,7 +244,7 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         return self.slider_windows, self.slider_isolation, self.dial_orientation, self.previous_button, self.next_button, \
-               self.prompt_text, self.isolation_print, self.windows_print
+               self.prompt_text, self.isolation_print, self.windows_print, self.image
 
     # def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
     #     U_wall = Th_cond_wall / e_wall
