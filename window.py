@@ -36,7 +36,7 @@ class Window(QtWidgets.QMainWindow):
         ## we shall always return the controlls buttons
 
         self.window_slider, self.isolation_slider, self.orientation_dial, self.previous_prompt, self.next_prompt, \
-        self.prompt_text, self.isolation_print, self.windows_print, self.image = Ui_Form().setupUi(self, graph, size)
+        self.prompt_text, self.isolation_print, self.windows_print, self.orientation_print, self.image = Ui_Form().setupUi(self, graph, size)
 
         self.previous_prompt.clicked.connect(self.backward_prompt)
         self.next_prompt.clicked.connect(self.forward_prompt)
@@ -82,6 +82,7 @@ class Window(QtWidgets.QMainWindow):
         update conduction model and UI when the building orientation is updated
         :param degree: building orientation
         """
+        self.orientation_print.setText("%.0f °" % degree)
         heatBalance = self.conduction_model.update_orientation(degree)
         self.graph.plot(heatBalance)
 

@@ -90,6 +90,11 @@ class Ui_Form(object):
         self.dial_orientation.setObjectName("dial_orientation")
         self.dial_orientation.setDisabled(True)
 
+        self.orientation_print = QtWidgets.QLabel(Form)
+        self.orientation_print.setGeometry(QtCore.QRect(margin+width/12+width/36,margin+9*vskip+width/36,width/36,width/36))
+        self.orientation_print.setAlignment(QtCore.Qt.AlignCenter)
+        self.orientation_print.setObjectName("orientation_print")
+
         self.label_north = QtWidgets.QLabel(Form)
         self.label_north.setGeometry(QtCore.QRect(margin + width / 12, margin + 9 * vskip - 30, width / 12, 30))
         self.label_north.setAlignment(QtCore.Qt.AlignCenter)
@@ -303,7 +308,7 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         return self.slider_windows, self.slider_isolation, self.dial_orientation, self.previous_button, self.next_button, \
-               self.prompt_text, self.isolation_print, self.windows_print, self.image
+               self.prompt_text, self.isolation_print, self.windows_print, self.orientation_print, self.image
 
     # def heat_loss_wall(self, T_out, T_in, A_wall, e_wall, Th_cond_wall):
     #     U_wall = Th_cond_wall / e_wall
@@ -377,8 +382,9 @@ class Ui_Form(object):
         self.label_west.setText(_translate("Form", "O"))
         self.label_east.setText(_translate("Form", "E"))
         self.prompt_text.setText(_translate("Form", self.initial_prompt))
-        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value() / 100} m"))
+        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value()} cm"))
         self.windows_print.setText(_translate("Form", f"{self.slider_windows.value()} %"))
+        self.orientation_print.setText(_translate("Form", f"{self.dial_orientation.value()} °"))
 
 
 class Window(QtWidgets.QMainWindow, Ui_Form):
