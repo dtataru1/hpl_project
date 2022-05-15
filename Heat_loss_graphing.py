@@ -40,79 +40,81 @@ class Ui_Form(object):
         Form.resize(width, height)
 
         margin = width / 50
-        vskip = height/36
+        vskip = height / 36
         # PARAMETERS
 
         self.label_parameters = QtWidgets.QLabel(Form)
-        self.label_parameters.setGeometry(QtCore.QRect(margin, margin, width/4, 20))
+        self.label_parameters.setGeometry(QtCore.QRect(margin, margin, width / 4, 20))
         self.label_parameters.setObjectName("label_parameters")
 
         # Isolation
         self.label_isolation = QtWidgets.QLabel(Form)
-        self.label_isolation.setGeometry(QtCore.QRect(margin, margin + 2*vskip, width/4, 30))
+        self.label_isolation.setGeometry(QtCore.QRect(margin, margin + 2 * vskip, width / 4, 30))
         self.label_isolation.setObjectName("label_isolation")
 
         self.slider_isolation = QtWidgets.QSlider(Form)
-        self.slider_isolation.setGeometry(QtCore.QRect(margin, margin + 3*vskip, width/4-3*vskip, 30))
+        self.slider_isolation.setGeometry(QtCore.QRect(margin, margin + 3 * vskip, width / 4 - 3 * vskip, 30))
         self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
         self.slider_isolation.setMinimum(1)
         self.slider_isolation.setObjectName("slider_isolation")
         self.slider_isolation.setDisabled(True)
 
         self.isolation_print = QtWidgets.QLabel(Form)
-        self.isolation_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 3*vskip, 3*vskip, 30))
+        self.isolation_print.setGeometry(
+            QtCore.QRect(margin + width / 4 - 2 * vskip, margin + 3 * vskip, 3 * vskip, 30))
         self.isolation_print.setObjectName("isolation_print")
 
         # Windows
         self.label_windows = QtWidgets.QLabel(Form)
-        self.label_windows.setGeometry(QtCore.QRect(margin, margin + 5*vskip, width/4, 30))
+        self.label_windows.setGeometry(QtCore.QRect(margin, margin + 5 * vskip, width / 4, 30))
         self.label_windows.setObjectName("label_windows")
 
         self.slider_windows = QtWidgets.QSlider(Form)
-        self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 6*vskip, width/4-3*vskip, 30))
+        self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 6 * vskip, width / 4 - 3 * vskip, 30))
         self.slider_windows.setOrientation(QtCore.Qt.Horizontal)
         self.slider_windows.setObjectName("slider_windows")
         self.slider_windows.setDisabled(True)
 
         self.windows_print = QtWidgets.QLabel(Form)
-        self.windows_print.setGeometry(QtCore.QRect(margin + width/4 - 2*vskip, margin + 6*vskip, 3*vskip, 30))
+        self.windows_print.setGeometry(QtCore.QRect(margin + width / 4 - 2 * vskip, margin + 6 * vskip, 3 * vskip, 30))
         self.windows_print.setObjectName("isolation_print")
 
         # Orientation
         self.label_orientation = QtWidgets.QLabel(Form)
-        self.label_orientation.setGeometry(QtCore.QRect(margin, margin + 8*vskip, width/4, 30))
+        self.label_orientation.setGeometry(QtCore.QRect(margin, margin + 8 * vskip, width / 4, 30))
         self.label_orientation.setObjectName("label_orientation")
 
         self.dial_orientation = QtWidgets.QDial(Form)
         self.dial_orientation.setWrapping(True)
-        self.dial_orientation.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip, width/12, width/12))
+        self.dial_orientation.setGeometry(QtCore.QRect(margin + width / 12, margin + 9 * vskip, width / 12, width / 12))
         self.dial_orientation.setObjectName("dial_orientation")
         self.dial_orientation.setDisabled(True)
 
         self.label_north = QtWidgets.QLabel(Form)
-        self.label_north.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip-30, width/12, 30))
+        self.label_north.setGeometry(QtCore.QRect(margin + width / 12, margin + 9 * vskip - 30, width / 12, 30))
         self.label_north.setAlignment(QtCore.Qt.AlignCenter)
         self.label_north.setObjectName("label_windows_2")
 
         self.label_south = QtWidgets.QLabel(Form)
-        self.label_south.setGeometry(QtCore.QRect(margin + width/12, margin + 9*vskip-30 + width/12 + 30, width/12, 30))
+        self.label_south.setGeometry(
+            QtCore.QRect(margin + width / 12, margin + 9 * vskip - 30 + width / 12 + 30, width / 12, 30))
         self.label_south.setAlignment(QtCore.Qt.AlignCenter)
         self.label_south.setObjectName("label_south")
 
         self.label_west = QtWidgets.QLabel(Form)
-        self.label_west.setGeometry(QtCore.QRect(margin + width/12 - 30, margin + 9*vskip, 30, width/12))
+        self.label_west.setGeometry(QtCore.QRect(margin + width / 12 - 30, margin + 9 * vskip, 30, width / 12))
         self.label_west.setAlignment(QtCore.Qt.AlignCenter)
         self.label_west.setObjectName("label_west")
 
         self.label_east = QtWidgets.QLabel(Form)
-        self.label_east.setGeometry(QtCore.QRect(margin + 2*width/12, margin + 9*vskip, 30, width/12))
+        self.label_east.setGeometry(QtCore.QRect(margin + 2 * width / 12, margin + 9 * vskip, 30, width / 12))
         self.label_east.setAlignment(QtCore.Qt.AlignCenter)
 
         self.label_east.setObjectName("label_east")
 
         # Placeholder for graph
         self.widget = QtWidgets.QWidget(Form)
-        self.widget.setGeometry(2*margin + width/4, 2*margin+height/6, 2*width/3, 2*height/3)
+        self.widget.setGeometry(2 * margin + width / 4, 2 * margin + height / 6, 2 * width / 3, 2 * height / 3)
         layout = QtWidgets.QVBoxLayout(self.widget)
 
         # Graph object
@@ -122,7 +124,8 @@ class Ui_Form(object):
 
         # Text object: questions, explanations, etc.
         self.prompt_text = QtWidgets.QLabel(Form)
-        self.prompt_text.setGeometry(QtCore.QRect(2*margin + width/4, 2*margin + width/40, 2*width/3, height/6-width/40))
+        self.prompt_text.setGeometry(
+            QtCore.QRect(2 * margin + width / 4, 2 * margin + width / 40, 2 * width / 3, height / 6 - width / 40))
         self.prompt_text.setObjectName("prompt_text")
         self.prompt_text.setAlignment(QtCore.Qt.AlignCenter)
         self.prompt_text.setWordWrap(True)
@@ -135,43 +138,51 @@ class Ui_Form(object):
         # Previous prompt button
         self.previous_button = QtWidgets.QToolButton(Form)
         self.previous_button.setArrowType(QtCore.Qt.LeftArrow)
-        self.previous_button.setGeometry(QtCore.QRect(2*margin + width/4, margin, width/40, width/40))
+        self.previous_button.setGeometry(QtCore.QRect(2 * margin + width / 4, margin, width / 40, width / 40))
         self.previous_button.setObjectName("previous_button")
 
         # Next prompt button
         self.next_button = QtWidgets.QToolButton(Form)
         self.next_button.setArrowType(QtCore.Qt.RightArrow)
-        self.next_button.setGeometry(QtCore.QRect(2*margin + width/4 + width/40, margin, width/40, width/40))
+        self.next_button.setGeometry(QtCore.QRect(2 * margin + width / 4 + width / 40, margin, width / 40, width / 40))
         self.next_button.setObjectName("next_button")
 
         # Theory buttons
         self.theory_button_1 = QtWidgets.QToolButton(Form)
-        self.theory_button_1.setGeometry(QtCore.QRect(width/4 + 2*width/3 - 3*width/40, margin, width/40, width/40))
+        self.theory_button_1.setGeometry(
+            QtCore.QRect(width / 4 + 2 * width / 3 - 3 * width / 40, margin, width / 40, width / 40))
         self.theory_button_1.setObjectName("theory_button_1")
         self.theory_button_1.setText("1")
 
         self.theory_button_2 = QtWidgets.QToolButton(Form)
-        self.theory_button_2.setGeometry(QtCore.QRect(margin + width/4 + 2*width/3 - 2*width/40, margin, width/40, width/40))
+        self.theory_button_2.setGeometry(
+            QtCore.QRect(margin + width / 4 + 2 * width / 3 - 2 * width / 40, margin, width / 40, width / 40))
         self.theory_button_2.setObjectName("theory_button_2")
         self.theory_button_2.setText("2")
 
         self.theory_button_3 = QtWidgets.QToolButton(Form)
-        self.theory_button_3.setGeometry(QtCore.QRect(2*margin + width/4 + 2*width/3 - width/40, margin, width/40, width/40))
+        self.theory_button_3.setGeometry(
+            QtCore.QRect(2 * margin + width / 4 + 2 * width / 3 - width / 40, margin, width / 40, width / 40))
         self.theory_button_3.setObjectName("theory_button_3")
         self.theory_button_3.setText("3")
 
         # Theory displays
-        self.theory_1_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
-        self.theory_1_box.setGeometry(QtCore.QRect((width-height*.8/1.41)/2,height*.1,height*.8/1.41,height*.8))
+        self.theory_1_box = QtWidgets.QDialog(Form,
+                                              QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_1_box.setGeometry(
+            QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
         self.theory_1 = QtWidgets.QLabel(self.theory_1_box)
-        self.theory_1.setPixmap(QtGui.QPixmap("LM_Romeo_Tatti-1.png").scaledToHeight(height*.8))
+        self.theory_1.setPixmap(QtGui.QPixmap("LM_Romeo_Tatti-1.png").scaledToHeight(height * .8))
 
-        self.theory_2_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
-        self.theory_2_box.setGeometry(QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
+        self.theory_2_box = QtWidgets.QDialog(Form,
+                                              QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_2_box.setGeometry(
+            QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
         self.theory_2 = QtWidgets.QLabel(self.theory_2_box)
         self.theory_2.setPixmap(QtGui.QPixmap("CV_ingenieur-1.png").scaledToHeight(height * .8))
 
-        self.theory_3_box = QtWidgets.QDialog(Form,QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.theory_3_box = QtWidgets.QDialog(Form,
+                                              QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
         self.theory_3_box.setGeometry(
             QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
         self.theory_3 = QtWidgets.QLabel(self.theory_3_box)
@@ -187,48 +198,96 @@ class Ui_Form(object):
         self.theory_button_3.clicked.connect(self.theory_3_box.open)
         self.theory_button_3.clicked.connect(lambda: self.dial_orientation.setDisabled(False))
 
-
         # Drawing stuff
-        self.image = gl.GLViewWidget(Form,'translucent')
-        self.image.setGeometry(QtCore.QRect(margin, height - width / 4 - margin, width / 4, width / 4))
+        self.image = gl.GLViewWidget(Form)
+        self.image.setGeometry(QtCore.QRect(margin, height - width / 4 - 3*margin, width / 4, width / 4))
         self.image.setBackgroundColor(Form.palette().color(Form.backgroundRole()))
         self.image.opts['fov'] *= .8
         self.image.opts['distance'] *= .8
         self.image.show()
-        c = pg.glColor(0,0,0,100)
+        c = pg.glColor(0, 0, 0, 100)
 
         # Fixed frame
-        points_fixed = np.array([[1.8,0,1.5],[1.8,0,-1.5],[-1.8,0,-1.5],[-1.8,0,1.5],[1.8,0,1.5]])
-        fixed_frame = gl.GLLinePlotItem(pos=points_fixed,mode='line_strip',color=c, glOptions='translucent')
+        points_fixed = np.array([[1.8, 0, 1.5], [1.8, 0, -1.5], [-1.8, 0, -1.5], [-1.8, 0, 1.5], [1.8, 0, 1.5]])
+        fixed_frame = gl.GLLinePlotItem(pos=points_fixed, mode='line_strip', color=c, glOptions='translucent')
         self.image.addItem(fixed_frame)
 
         # Window frame
-        points_window = points_fixed*(np.sqrt(self.slider_windows.value()/100))
-        window_frame = gl.GLLinePlotItem(pos=points_window,mode='line_strip',color=c, glOptions='translucent')
+        points_window = points_fixed * (np.sqrt(self.slider_windows.value() / 100))
+        window_frame = gl.GLLinePlotItem(pos=points_window, mode='line_strip', color=c, glOptions='translucent')
         self.image.addItem(window_frame)
 
         # Depth
-        frame_depth_points = np.empty((8,3))
-        frame_depth_points[0::2,] = points_fixed[:4,]
-        frame_depth_points[1::2,] = points_fixed[:4,] + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
-        frame_depth = gl.GLLinePlotItem(pos=frame_depth_points,mode='lines',color=c, glOptions='translucent')
+        frame_depth_points = np.empty((8, 3))
+        frame_depth_points[0::2, ] = points_fixed[:4, ]
+        frame_depth_points[1::2, ] = points_fixed[:4, ] + (self.slider_isolation.value() / 100) * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        frame_depth = gl.GLLinePlotItem(pos=frame_depth_points, mode='lines', color=c, glOptions='translucent')
         self.image.addItem(frame_depth)
 
         if self.slider_windows.value() != 0:
-            window_depth_points = np.empty((8,3))
-            window_depth_points[0::2,] = points_window[:4,]
-            window_depth_points[1::2,] = points_window[:4,] + (self.slider_isolation.value())*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
-            window_depth = gl.GLLinePlotItem(pos=window_depth_points,mode='lines',color=c, glOptions='translucent')
+            window_depth_points = np.empty((8, 3))
+            window_depth_points[0::2, ] = points_window[:4, ]
+            window_depth_points[1::2, ] = points_window[:4, ] + (self.slider_isolation.value()) * np.array(
+                [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+            window_depth = gl.GLLinePlotItem(pos=window_depth_points, mode='lines', color=c, glOptions='translucent')
             self.image.addItem(window_depth)
 
         # Back frame
-        back_points = points_fixed + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
-        back_frame = gl.GLLinePlotItem(pos=back_points,mode='line_strip',color=c, glOptions='translucent')
+        back_points = points_fixed + (self.slider_isolation.value() / 100) * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        back_frame = gl.GLLinePlotItem(pos=back_points, mode='line_strip', color=c, glOptions='translucent')
         self.image.addItem(back_frame)
 
-        back_window_points = points_window + (self.slider_isolation.value()/100)*np.array([[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]])
-        back_window_frame = gl.GLLinePlotItem(pos=back_window_points,mode='line_strip',color=c, glOptions='translucent')
+        back_window_points = points_window + (self.slider_isolation.value() / 100) * np.array(
+            [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
+        back_window_frame = gl.GLLinePlotItem(pos=back_window_points, mode='line_strip', color=c,
+                                              glOptions='translucent')
         self.image.addItem(back_window_frame)
+
+        # Labels
+        hoffset = -1.9
+        voffset = 1.6
+        spacing = -.15
+        centering = (5*spacing+.1)/2
+
+        three_points = np.array([[0, 0, 0], [-.1, 0, 0], [-.1, 0, .1], [0, 0, .1], [-.1, 0, .1],
+                                 [-.1, 0, .2], [0, 0, .2]])
+        three = gl.GLLinePlotItem(pos=three_points+np.array([[hoffset,0,0]]*7), mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(three)
+
+        zero_points = np.array([[0, 0, 0], [-.1, 0, 0], [-.1, 0, .2], [0, 0, .2], [0, 0, 0]])
+        zero = gl.GLLinePlotItem(pos=zero_points+np.array([[hoffset+spacing,0,0]]*5), mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(zero)
+
+        zero_2 = gl.GLLinePlotItem(pos=(zero_points + np.array([[hoffset+2*spacing, 0, 0]] * 5)), mode='line_strip', color=c,
+                                   glOptions='translucent')
+        self.image.addItem(zero_2)
+
+        letter_c_points = np.array([[0, 0, 0], [.1, 0, 0], [.1, 0, .1], [0, 0, .1]])
+        letter_c = gl.GLLinePlotItem(pos=letter_c_points + np.array([[hoffset + 4 * spacing, 0, 0]] * 4), mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_c)
+
+        letter_m_points = np.array([[0, 0, 0], [0, 0, .1], [.05, 0, .1], [.05, 0, 0], [.05, 0, .1], [.1, 0, .1], [.1, 0, 0]])
+        letter_m = gl.GLLinePlotItem(pos=letter_m_points + np.array([[hoffset + 5 * spacing, 0, 0]] * 7), mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_m)
+
+        three_up = gl.GLLinePlotItem(pos=three_points + np.array([[-centering,0,voffset]]*7),mode='line_strip',color=c,glOptions='translucent')
+        self.image.addItem(three_up)
+
+        six_points = np.array([[-.1,0,.2],[0,0,.2],[0,0,0],[-.1,0,0],[-.1,0,.1],[0,0,.1]])
+        six_up = gl.GLLinePlotItem(pos=six_points + np.array([[spacing-centering,0,voffset]]*6),mode='line_strip',color=c,glOptions='translucent')
+        self.image.addItem(six_up)
+
+        zero_up = gl.GLLinePlotItem(pos=zero_points + np.array([[2*spacing-centering,0,voffset]]*5),mode='line_strip',color=c,glOptions='translucent')
+        self.image.addItem(zero_up)
+
+        letter_c_up = gl.GLLinePlotItem(pos=letter_c_points + np.array([[4*spacing-centering,0,voffset]]*4),mode='line_strip',color=c,glOptions='translucent')
+        self.image.addItem(letter_c_up)
+
+        letter_m_up = gl.GLLinePlotItem(pos=letter_m_points + np.array([[5*spacing-centering,0,voffset]]*7),mode='line_strip',color=c,glOptions='translucent')
+        self.image.addItem(letter_m_up)
+
 
         # self.canvas.xdata = np.linspace(1,14,14)
         # self.canvas.ydata = np.zeros(14)
@@ -318,7 +377,7 @@ class Ui_Form(object):
         self.label_west.setText(_translate("Form", "O"))
         self.label_east.setText(_translate("Form", "E"))
         self.prompt_text.setText(_translate("Form", self.initial_prompt))
-        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value()/100} m"))
+        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value() / 100} m"))
         self.windows_print.setText(_translate("Form", f"{self.slider_windows.value()} %"))
 
 

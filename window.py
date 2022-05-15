@@ -125,3 +125,57 @@ class Window(QtWidgets.QMainWindow):
             [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
         back_window_frame = gl.GLLinePlotItem(pos=back_window_points, mode='line_strip', color=c, glOptions='translucent')
         image.addItem(back_window_frame)
+
+        # Labels
+        hoffset = -1.9
+        voffset = 1.6
+        spacing = -.15
+        centering = (5 * spacing + .1) / 2
+
+        three_points = np.array([[0, 0, 0], [-.1, 0, 0], [-.1, 0, .1], [0, 0, .1], [-.1, 0, .1],
+                                 [-.1, 0, .2], [0, 0, .2]])
+        three = gl.GLLinePlotItem(pos=three_points + np.array([[hoffset, 0, 0]] * 7), mode='line_strip', color=c,
+                                  glOptions='translucent')
+        self.image.addItem(three)
+
+        zero_points = np.array([[0, 0, 0], [-.1, 0, 0], [-.1, 0, .2], [0, 0, .2], [0, 0, 0]])
+        zero = gl.GLLinePlotItem(pos=zero_points + np.array([[hoffset + spacing, 0, 0]] * 5), mode='line_strip',
+                                 color=c, glOptions='translucent')
+        self.image.addItem(zero)
+
+        zero_2 = gl.GLLinePlotItem(pos=(zero_points + np.array([[hoffset + 2 * spacing, 0, 0]] * 5)), mode='line_strip',
+                                   color=c,
+                                   glOptions='translucent')
+        self.image.addItem(zero_2)
+
+        letter_c_points = np.array([[0, 0, 0], [.1, 0, 0], [.1, 0, .1], [0, 0, .1]])
+        letter_c = gl.GLLinePlotItem(pos=letter_c_points + np.array([[hoffset + 4 * spacing, 0, 0]] * 4),
+                                     mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_c)
+
+        letter_m_points = np.array(
+            [[0, 0, 0], [0, 0, .1], [.05, 0, .1], [.05, 0, 0], [.05, 0, .1], [.1, 0, .1], [.1, 0, 0]])
+        letter_m = gl.GLLinePlotItem(pos=letter_m_points + np.array([[hoffset + 5 * spacing, 0, 0]] * 7),
+                                     mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_m)
+
+        three_up = gl.GLLinePlotItem(pos=three_points + np.array([[-centering, 0, voffset]] * 7), mode='line_strip',
+                                     color=c, glOptions='translucent')
+        self.image.addItem(three_up)
+
+        six_points = np.array([[-.1, 0, .2], [0, 0, .2], [0, 0, 0], [-.1, 0, 0], [-.1, 0, .1], [0, 0, .1]])
+        six_up = gl.GLLinePlotItem(pos=six_points + np.array([[spacing - centering, 0, voffset]] * 6),
+                                   mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(six_up)
+
+        zero_up = gl.GLLinePlotItem(pos=zero_points + np.array([[2 * spacing - centering, 0, voffset]] * 5),
+                                    mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(zero_up)
+
+        letter_c_up = gl.GLLinePlotItem(pos=letter_c_points + np.array([[4 * spacing - centering, 0, voffset]] * 4),
+                                        mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_c_up)
+
+        letter_m_up = gl.GLLinePlotItem(pos=letter_m_points + np.array([[5 * spacing - centering, 0, voffset]] * 7),
+                                        mode='line_strip', color=c, glOptions='translucent')
+        self.image.addItem(letter_m_up)
