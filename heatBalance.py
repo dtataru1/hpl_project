@@ -10,6 +10,12 @@ from matplotlib.figure import Figure
 
 
 ## TODO end implementation heat balance
+class HeatBalanceWeek():
+    def __init__(self, solarGain, heaterGain, heatLoss):
+        self.solarGain = solarGain
+        self.heaterGain = heaterGain
+        self.heatLoss = heatLoss
+
 class HeatBalanceMonth():
 
     def __init__(self, solarGain, heaterGain, heatLoss):
@@ -17,18 +23,29 @@ class HeatBalanceMonth():
         self.heaterGain = heaterGain
         self.heatLoss = heatLoss
 
-
 class HeatBalance():
-    
-    def __init__(self, monthlyHeatconsumption=None):
-        self.monthlyHeatconsumption = monthlyHeatconsumption
-        if monthlyHeatconsumption is None :
-            self._defaultConsumption()
-        
+
+    def __init__(self, WeeklyHeatConsumption=None):
+        self.WeeklyHeatConsumption = WeeklyHeatConsumption
+        if WeeklyHeatConsumption is None:
+            self.defaultConsumption()
+
     def _defaultConsumption(self):
-        self.monthlyHeatconsumption = {'January' : HeatBalanceMonth(2,5,7), 
-            'February' : HeatBalanceMonth(2,8,10), 
-            'March' : HeatBalanceMonth(2,4,6)}
+        self.WeeklyHeatConsumption = [HeatBalanceWeek(1,4,2), HeatBalanceWeek(2,3,1), HeatBalanceWeek(5,2,1)]
+
+
+# class HeatBalance():
+    
+#     def __init__(self, monthlyHeatconsumption=None):
+#         self.monthlyHeatconsumption = monthlyHeatconsumption
+#         if monthlyHeatconsumption is None :
+#             self._defaultConsumption()
+        
+#     def _defaultConsumption(self):
+#         self.monthlyHeatconsumption = {'January' : HeatBalanceMonth(2,5,7), 
+#             'February' : HeatBalanceMonth(2,8,10), 
+#             'March' : HeatBalanceMonth(2,4,6)}
+
 
 class HeatBalanceGraph(FigureCanvasQTAgg):
 
@@ -46,8 +63,10 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
     def plot(self, heatBalance):
         self.axsMonths.cla()
         self.axsTot.cla()
-        consumption = heatBalance.monthlyHeatconsumption.values()
-        labels = heatBalance.monthlyHeatconsumption.keys()
+        #consumption = heatBalance.monthlyHeatconsumption.values()
+        #labels = heatBalance.monthlyHeatconsumption.keys()
+        consumption = heatBalance.WeeklyHeatConsumption
+        labels = list(range(1,49))
         indices =  np.arange(len(labels))
         ### TO DO : use colorblind palette improve the pallete
         ### TO DO : improve display
