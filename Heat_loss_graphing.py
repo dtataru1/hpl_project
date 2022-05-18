@@ -177,7 +177,7 @@ class Ui_Form(object):
         self.theory_1_box.setGeometry(
             QtCore.QRect((width - height * .8 / 1.41) / 2, height * .1, height * .8 / 1.41, height * .8))
         self.theory_1 = QtWidgets.QLabel(self.theory_1_box)
-        self.theory_1.setPixmap(QtGui.QPixmap("LM_Romeo_Tatti-1.png").scaledToHeight(height * .8))
+        self.theory_1.setPixmap(QtGui.QPixmap("conduction_theory.png").scaledToHeight(height * .8))
 
         self.theory_2_box = QtWidgets.QDialog(Form,
                                               QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
