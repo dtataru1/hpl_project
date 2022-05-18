@@ -53,6 +53,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         fig = Figure(figsize=(width, height), dpi=dpi)
         fig.patch.set_facecolor('#f0f0f0')
         self.axsMonths, self.axsTot = fig.subplots(1,2, gridspec_kw={'width_ratios': [5, 1]})
+        self.months = ['jan', 'fev', 'mars', 'avril', 'mai', 'juin', 'jui', 'aout','sept', 'oct', 'nov', 'dec']
         super(HeatBalanceGraph, self).__init__(fig)
     
     def remove_frames(self, axs):
@@ -66,13 +67,13 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         #consumption = heatBalance.monthlyHeatconsumption.values()
         #labels = heatBalance.monthlyHeatconsumption.keys()
         consumption = heatBalance.WeeklyHeatConsumption
-        labels = list(range(1,49))
-        indices =  np.arange(len(labels))
+        indices =  list(range(48))
         ### TO DO : use colorblind palette improve the pallete
         ### TO DO : improve display
       
       
-        solarGain = extract_gain(consumption, lambda h : h.solarGain+max(0,h.heatLoss))
+        goodSolarGain = extract_gain(consumption, lambda h : h.solarGain)
+        badSolarGain = extract_gain(consumption, lambda h : min(0,h.heaterGain))
         heaterGain = extract_gain(consumption, lambda h : max(0,h.heaterGain))
         airCooling = extract_gain(consumption, lambda h : min(0,h.heaterGain))
         heatLoss = extract_gain(consumption, lambda h : min(0,h.heatLoss))
@@ -81,28 +82,34 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
        
 
         tot_heatLoss = [sum(heaterGain)]
-        tot_aircooling = [-sum(airCooling)]
+        
 
-        self.axsTot.bar([1],tot_aircooling, color='#3ec1c3')
-        self.axsTot.bar([1],tot_heatLoss, bottom=tot_aircooling, color='#ef4a5a')
+        #self.axsTot.bar([1],tot_aircooling, color='#3ec1c3')
+        self.axsTot.bar([1],tot_heatLoss, color='#ef4a5a')
         self.axsTot.set_title('consomation annuel')
         self.axsTot.plot([0.5, 1.5], [149, 149], color='black', label='consomation moyenne')
         self.axsTot.plot([0.5, 1.5], [41, 41], color='#a2c616', label='minergie')
         self.remove_frames(self.axsTot)
         self.axsTot.set_xticks([])
-        self.axsTot.set_ylim([0,250])
+        self.axsTot.set_ylim([0,500])
         self.axsTot.legend()
 
 
-        self.axsMonths.bar(indices, heaterGain, color='#ef4a5a', label='chauffage')
-        self.axsMonths.bar(indices, solarGain, bottom=heaterGain,color='#ffd11c', label='gain solaire')
-        self.axsMonths.bar(indices, airCooling,color='#3ec1c3', label='climatisation')
-        self.axsMonths.bar(indices, heatLoss, bottom=airCooling, color='#7e7e85', label='perte thermique')
+        labels = [self.months[i//4] if i%4==1 else '' for i in range(48)]
+        self.axsMonths.bar(indices, heaterGain, bottom=goodSolarGain, color='#ef4a5a', label='chauffage', tick_label=labels)
+        
+        self.axsMonths.bar(indices, goodSolarGain, color='#ffd11c', label='gain solaire', tick_label=labels)
+        self.axsMonths.bar(indices, badSolarGain, color='#3ec1c3', label='gain solaire non voulu', tick_label=labels)
+        
+        #self.axsMonths.bar(indices, airCooling,color='#3ec1c3', label='climatisation', tick_label=labels)
+        #self.axsMonths.bar(indices, heatLoss, bottom=airCooling, color='#7e7e85', label='perte thermique', tick_label=labels)
+        self.axsMonths.set_xticks([])
+        self.axsMonths.set_xticklabels([str(4*i+1) for i in range(12)])
         self.remove_frames(self.axsMonths)
 
         self.axsMonths.set_xticks(indices)
         self.axsMonths.set_xticklabels(labels)
-        self.axsMonths.set_ylim([-40,40])
+        self.axsMonths.set_ylim([-15,100])
         self.axsMonths.set_title('consomation par mois')
         self.axsMonths.legend()
 

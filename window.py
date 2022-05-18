@@ -43,7 +43,7 @@ class Window(QtWidgets.QMainWindow):
         ## do not touch
         
         self.window_slider.valueChanged['int'].connect(lambda x: self.update_window(x/self.window_slider.maximum()))
-        self.isolation_slider.valueChanged['int'].connect(lambda x: self.update_isolation(x/self.isolation_slider.maximum()))
+        self.isolation_slider.valueChanged['int'].connect(lambda x: self.update_isolation(0.4*x/self.isolation_slider.maximum()))
         self.orientation_dial.valueChanged['int'].connect(lambda x: self.update_orientation(360*x/self.orientation_dial.maximum()))
         self.show()
 
