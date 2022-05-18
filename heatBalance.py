@@ -91,7 +91,8 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         self.axsTot.plot([0.5, 1.5], [41, 41], color='#a2c616', label='minergie')
         self.remove_frames(self.axsTot)
         self.axsTot.set_xticks([])
-        self.axsTot.set_ylim([0,500])
+        self.axsTot.set_ylabel('kwH/m²')
+        self.axsTot.set_ylim([0,350])
         self.axsTot.legend()
 
 
@@ -109,8 +110,9 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
 
         self.axsMonths.set_xticks(indices)
         self.axsMonths.set_xticklabels(labels)
-        self.axsMonths.set_ylim([-15,100])
+        self.axsMonths.set_ylim([-30,45])
         self.axsMonths.set_title('consomation par mois')
+        self.axsMonths.set_ylabel('kwH/m²')
         self.axsMonths.legend()
 
 
