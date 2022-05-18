@@ -168,11 +168,10 @@ class ConductionModel():
 
         #Conduction
         J2kwh = 2.77778 * 10 ** (-7)  # Conversion coefficient between J and kWh
-        Th_cond_wall = 1.2  # W/m/K, concrecte wall themrla Conductivity
-        Th_cond_window = 0.7
+        Th_cond_wall = 0.2  # W/m/K, concrecte wall themrla Conductivity
+        Th_cond_window = 1.7
         e_window= 0.1
         timestep = 60*60 #1-hour
-        air_coeff = 3
 
         for i in range(0, 48):
             #Q_wall = abs(np.multiply(Eps_s * A_wall_exposed*I_r[24*i*days_per_week:24*(i+1)*days_per_week], np.cos(sun_angle[24*i*days_per_week:24*(i+1)*days_per_week])))
