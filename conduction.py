@@ -18,8 +18,8 @@ class ConductionModel():
     compute the heat balance of a building
     """
     def __init__(self):
-        self.size = 0.00
-        self.degree = 0.0
+        self.size = 0.20
+        self.degree = 270.0
         self.isolation = 0.05
         self.int_temp = 22.0
         self.T_out, self.I_r, self.sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
