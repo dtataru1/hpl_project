@@ -72,7 +72,7 @@ class Window(QtWidgets.QMainWindow):
         update conduction model and UI when the isolation width is updated
         :param size: isolation width
         """
-        self.isolation_print.setText("%.2f m" % size)
+        self.isolation_print.setText("%.1f cm" % (size*100))
         heatBalance = self.conduction_model.update_isolation(size)
         self.graph.plot(heatBalance)
         self.update_image(self.image, size, self.window_slider.value()/100)

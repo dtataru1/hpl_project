@@ -109,7 +109,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
 
         self.axsMonths.set_xticks(indices)
         self.axsMonths.set_xticklabels(labels)
-        self.axsMonths.set_ylim([-30,45])
+        self.axsMonths.set_ylim([-10,40])
         self.axsMonths.set_title('consomation par mois')
         self.axsMonths.set_ylabel('kwH/m²')
         self.axsMonths.legend()
