@@ -20,7 +20,7 @@ class ConductionModel():
     def __init__(self):
         self.size = 0.00
         self.degree = 0.0
-        self.isolation = 0.001
+        self.isolation = 0.01
         self.int_temp = 22.0
         self.T_out, self.I_r, self.sun_angle = self.read_data('Temp_Data_Basel_2021.csv', 'Radiation_Data_Zurich_2018.csv', 'Zenith_Angle_Data_Zurich_2018.csv')
         
@@ -156,7 +156,7 @@ class ConductionModel():
         A_wall = (1-self.size)*3.6*3.0 # m^2, Wall surface area in contact with outside
         A_wind = 3.6*3.0*self.size
         #A_wall_exposed = A_wall * math.cos(np.deg2rad(self.degree)) + A_wall * math.sin(np.deg2rad(self.degree))
-        A_wind_exposed = A_wind * math.cos(np.deg2rad(self.degree)) + A_wind * math.sin(np.deg2rad(self.degree))
+        A_wind_exposed = A_wind * math.sin(np.deg2rad(self.degree))# #+ A_wind * math.sin(np.deg2rad(self.degree))
         #Solar Radiation through window
         T_out = self.T_out
         I_r = self.I_r
@@ -172,12 +172,20 @@ class ConductionModel():
         Th_cond_window = 1.7
         e_window= 0.1
         timestep = 60*60 #1-hour
-
         for i in range(0, 48):
             #Q_wall = abs(np.multiply(Eps_s * A_wall_exposed*I_r[24*i*days_per_week:24*(i+1)*days_per_week], np.cos(sun_angle[24*i*days_per_week:24*(i+1)*days_per_week])))
             #T_we = np.divide(Q_wall+Th_cond_wall/self.isolation * A_wall * self.int_temp + air_coeff*A_wall*T_out[month_temp_idx[i]:month_temp_idx[i+1]], Th_cond_wall/self.isolation * A_wall+air_coeff*A_wall)
             Q_loss = Th_cond_wall/self.isolation * A_wall * (T_out[24*i*days_per_week:24*(i+1)*days_per_week] - self.int_temp) + Th_cond_window/e_window * A_wind *(T_out[24*i*days_per_week:24*(i+1)*days_per_week] - self.int_temp)
             Q_sun = abs(np.multiply(z*ws*I_r[24*i*days_per_week:24*(i+1)*days_per_week], np.cos(sun_angle[24*i*days_per_week:24*(i+1)*days_per_week])*A_wind_exposed))
+            
+            
+            for j in range(0,days_per_week):
+                if self.degree >=5 and self.degree<=195:
+                    Q_sun[j*24+12:(j+1)*24] /= 2
+                #else:
+                 #   Q_sun[j*24:j*24+12] = 0
+            
+            
             E_loss_cond = 0
             E_sun = 0
             for j in range (0, len(Q_loss)-1):
@@ -190,7 +198,7 @@ class ConductionModel():
         return HeatBalance(heat_calculations)
         #return heat_calculations
 
-#test_class = ConductionModel()
+# test_class = ConductionModel()
 
 
-#test_values = test_class.update_isolation(0.3)
+# test_values = test_class.update_isolation(0.3)
