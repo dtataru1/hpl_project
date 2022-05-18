@@ -104,8 +104,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         
         #self.axsMonths.bar(indices, airCooling,color='#3ec1c3', label='climatisation', tick_label=labels)
         #self.axsMonths.bar(indices, heatLoss, bottom=airCooling, color='#7e7e85', label='perte thermique', tick_label=labels)
-        self.axsMonths.set_xticks([])
-        self.axsMonths.set_xticklabels([str(4*i+1) for i in range(12)])
+
         self.remove_frames(self.axsMonths)
 
         self.axsMonths.set_xticks(indices)

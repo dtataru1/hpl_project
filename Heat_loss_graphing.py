@@ -42,9 +42,9 @@ class QImageViewer(QtWidgets.QMainWindow):
         self.setCentralWidget(self.scrollArea)
 
         self.createActions()
-        self.createMenus()
+        #self.createMenus()
 
-        self.setWindowTitle("Image Viewer")
+        self.setWindowTitle("Théorie")
         self.resize(sizeh, sizev)
 
         self.imageLabel.setPixmap(QtGui.QPixmap(img))
