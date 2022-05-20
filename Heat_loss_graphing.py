@@ -190,7 +190,6 @@ class Ui_Form(object):
 
     def setupUi(self, Form, graph, size):
         Form.setObjectName("Form")
-        #Form.setStyleSheet("QLabel{font-size: 8pt;}")
         width = size.width()
         height = size.height()
         Form.resize(width, height)
