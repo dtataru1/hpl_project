@@ -190,6 +190,7 @@ class Ui_Form(object):
 
     def setupUi(self, Form, graph, size):
         Form.setObjectName("Form")
+        Form.setStyleSheet("QLabel{font-size: 9pt;}")
         width = size.width()
         height = size.height()
         Form.resize(width, height)
@@ -336,8 +337,8 @@ class Ui_Form(object):
         # Theory displays
 
         self.theory_viewer_1 = QImageViewer(2/3*width,2/3*height,"conduction_theory.png")
-        self.theory_viewer_2 = QImageViewer(2/3*width,2/3*height,"LM_Romeo_Tatti-1.png")
-        self.theory_viewer_3 = QImageViewer(2/3*width,2/3*height,"HW1-08.png")
+        self.theory_viewer_2 = QImageViewer(2/3*width,2/3*height,"window_theory.png")
+        self.theory_viewer_3 = QImageViewer(2/3*width,2/3*height,"angle_theory.png")
         # Connections
         self.theory_button_1.clicked.connect(self.theory_viewer_1.show)
         self.theory_button_1.clicked.connect(lambda: self.slider_isolation.setDisabled(False))
