@@ -191,6 +191,7 @@ class Ui_Form(object):
     def setupUi(self, Form, graph, size):
         Form.setObjectName("Form")
         Form.setStyleSheet("QLabel{font-size: 9pt;}")
+        Form.setWindowTitle("ArchiChaud")
         width = size.width()
         height = size.height()
         Form.resize(width, height)
@@ -523,7 +524,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "ArchiChaud"))
         self.label_parameters.setText(_translate("Form", "PARAMÈTRES"))
         self.label_isolation.setText(_translate("Form", "Épaisseur d'isolation"))
         self.label_windows.setText(_translate("Form", "Surface vitrée"))
