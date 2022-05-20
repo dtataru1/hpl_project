@@ -72,8 +72,8 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         ### TO DO : improve display
       
       
-        goodSolarGain = extract_gain(consumption, lambda h : h.solarGain)
-        badSolarGain = extract_gain(consumption, lambda h : min(0,h.heaterGain))
+        goodSolarGain = extract_gain(consumption, lambda h : h.solarGain+min(0,h.heaterGain))
+        badSolarGain = extract_gain(consumption, lambda h : -min(0,h.heaterGain))
         heaterGain = extract_gain(consumption, lambda h : max(0,h.heaterGain))
         airCooling = extract_gain(consumption, lambda h : min(0,h.heaterGain))
         heatLoss = extract_gain(consumption, lambda h : min(0,h.heatLoss))
@@ -99,8 +99,8 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
         labels = [self.months[i//4] if i%4==1 else '' for i in range(48)]
         self.axsMonths.bar(indices, heaterGain, bottom=goodSolarGain, color='#ef4a5a', label='chauffage', tick_label=labels)
         
-        self.axsMonths.bar(indices, goodSolarGain, color='#ffd11c', label='gain solaire', tick_label=labels)
-        self.axsMonths.bar(indices, badSolarGain, color='#3ec1c3', label='gain solaire non voulu', tick_label=labels)
+        self.axsMonths.bar(indices, goodSolarGain, color='#ffd11c', bottom=badSolarGain, label='gain solaire', tick_label=labels)
+        self.axsMonths.bar(indices, badSolarGain, color='#a22898', label='gain solaire non voulu', tick_label=labels)
         
         #self.axsMonths.bar(indices, airCooling,color='#3ec1c3', label='climatisation', tick_label=labels)
         #self.axsMonths.bar(indices, heatLoss, bottom=airCooling, color='#7e7e85', label='perte thermique', tick_label=labels)
@@ -109,7 +109,7 @@ class HeatBalanceGraph(FigureCanvasQTAgg):
 
         self.axsMonths.set_xticks(indices)
         self.axsMonths.set_xticklabels(labels)
-        self.axsMonths.set_ylim([-10,40])
+        self.axsMonths.set_ylim([0,40])
         self.axsMonths.set_title('consomation par mois')
         self.axsMonths.set_ylabel('kwH/m²')
         self.axsMonths.legend()
