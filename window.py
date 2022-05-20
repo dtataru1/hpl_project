@@ -51,11 +51,13 @@ class Window(QtWidgets.QMainWindow):
         if self.current_prompt < self.prompts_count - 1:
             self.current_prompt += 1
             self.prompt_text.setText(self.prompts[self.current_prompt])
+            self.prompt_text.setScaledContents(True)
 
     def backward_prompt(self):
         if self.current_prompt > 0:
             self.current_prompt -= 1
             self.prompt_text.setText(self.prompts[self.current_prompt])
+            self.prompt_text.setScaledContents(True)
 
     def update_window(self, size: float):
         """
