@@ -47,7 +47,7 @@ class QImageViewer(QtWidgets.QMainWindow):
         self.setWindowTitle("Théorie")
         self.resize(sizeh, sizev)
 
-        self.imageLabel.setPixmap(QtGui.QPixmap(img))
+        self.imageLabel.setPixmap(QtGui.QPixmap(img).scaledToWidth(sizeh-36))
         self.scaleFactor = 1.0
 
         self.scrollArea.setVisible(True)
@@ -190,6 +190,7 @@ class Ui_Form(object):
 
     def setupUi(self, Form, graph, size):
         Form.setObjectName("Form")
+        #Form.setStyleSheet("QLabel{font-size: 8pt;}")
         width = size.width()
         height = size.height()
         Form.resize(width, height)
@@ -211,6 +212,8 @@ class Ui_Form(object):
         self.slider_isolation.setGeometry(QtCore.QRect(margin, margin + 3 * vskip, width / 4 - 3 * vskip, 30))
         self.slider_isolation.setOrientation(QtCore.Qt.Horizontal)
         self.slider_isolation.setMinimum(1)
+        self.slider_isolation.setMaximum(80)
+        self.slider_isolation.setValue(10)
         self.slider_isolation.setObjectName("slider_isolation")
         self.slider_isolation.setDisabled(True)
 
@@ -228,6 +231,7 @@ class Ui_Form(object):
         self.slider_windows.setGeometry(QtCore.QRect(margin, margin + 6 * vskip, width / 4 - 3 * vskip, 30))
         self.slider_windows.setOrientation(QtCore.Qt.Horizontal)
         self.slider_windows.setObjectName("slider_windows")
+        self.slider_windows.setValue(20)
         self.slider_windows.setDisabled(True)
 
         self.windows_print = QtWidgets.QLabel(Form)
@@ -243,6 +247,9 @@ class Ui_Form(object):
         self.dial_orientation.setWrapping(True)
         self.dial_orientation.setGeometry(QtCore.QRect(margin + width / 12, margin + 9 * vskip, width / 12, width / 12))
         self.dial_orientation.setObjectName("dial_orientation")
+        self.dial_orientation.setMinimum(0)
+        self.dial_orientation.setMaximum(359)
+        self.dial_orientation.setValue(270)
         self.dial_orientation.setDisabled(True)
 
         self.orientation_print = QtWidgets.QLabel(Form)
@@ -288,6 +295,7 @@ class Ui_Form(object):
             QtCore.QRect(2 * margin + width / 4, 2 * margin + width / 40, 2 * width / 3, height / 6 - width / 40))
         self.prompt_text.setObjectName("prompt_text")
         self.prompt_text.setAlignment(QtCore.Qt.AlignCenter)
+        self.prompt_text.setScaledContents(True)
         self.prompt_text.setWordWrap(True)
         self.prompt_text.setStyleSheet("border: 1px solid black; padding: 20px;")
 
@@ -342,8 +350,13 @@ class Ui_Form(object):
         self.theory_button_3.clicked.connect(lambda: self.dial_orientation.setDisabled(False))
 
         # Drawing stuff
+        rem_vspace = height-(margin+9*vskip+width/12+30)
+        space_available = min(width/4, rem_vspace)
+
+
+
         self.image = gl.GLViewWidget(Form)
-        self.image.setGeometry(QtCore.QRect(margin, height - width / 4 - 3*margin, width / 4, width / 4))
+        self.image.setGeometry(QtCore.QRect(margin, height-(rem_vspace-space_available)/2-space_available, space_available, space_available))
         self.image.setBackgroundColor(Form.palette().color(Form.backgroundRole()))
         self.image.opts['fov'] *= .8
         self.image.opts['distance'] *= .8
@@ -363,7 +376,7 @@ class Ui_Form(object):
         # Depth
         frame_depth_points = np.empty((8, 3))
         frame_depth_points[0::2, ] = points_fixed[:4, ]
-        frame_depth_points[1::2, ] = points_fixed[:4, ] + (self.slider_isolation.value() / 100) * np.array(
+        frame_depth_points[1::2, ] = points_fixed[:4, ] + (self.slider_isolation.value() / 160) * np.array(
             [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
         frame_depth = gl.GLLinePlotItem(pos=frame_depth_points, mode='lines', color=c, glOptions='translucent')
         self.image.addItem(frame_depth)
@@ -371,7 +384,7 @@ class Ui_Form(object):
         if self.slider_windows.value() != 0:
             window_depth_points = np.empty((8, 3))
             window_depth_points[0::2, ] = points_window[:4, ]
-            window_depth_points[1::2, ] = points_window[:4, ] + (self.slider_isolation.value()) * np.array(
+            window_depth_points[1::2, ] = points_window[:4, ] + (self.slider_isolation.value()/160) * np.array(
                 [[0, 1, 0], [0, 1, 0], [0, 1, 0], [0, 1, 0]])
             window_depth = gl.GLLinePlotItem(pos=window_depth_points, mode='lines', color=c, glOptions='translucent')
             self.image.addItem(window_depth)
@@ -511,8 +524,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_parameters.setText(_translate("Form", "PARAMETRES"))
-        self.label_isolation.setText(_translate("Form", "Largeur isolation"))
+        self.label_parameters.setText(_translate("Form", "PARAMÈTRES"))
+        self.label_isolation.setText(_translate("Form", "Épaisseur d'isolation"))
         self.label_windows.setText(_translate("Form", "Surface vitrée"))
         self.label_orientation.setText(_translate("Form", "Orientation"))
         self.label_north.setText(_translate("Form", "N"))
@@ -520,7 +533,7 @@ class Ui_Form(object):
         self.label_west.setText(_translate("Form", "O"))
         self.label_east.setText(_translate("Form", "E"))
         self.prompt_text.setText(_translate("Form", self.initial_prompt))
-        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value()} cm"))
+        self.isolation_print.setText(_translate("Form", f"{self.slider_isolation.value()/2} cm"))
         self.windows_print.setText(_translate("Form", f"{self.slider_windows.value()} %"))
         self.orientation_print.setText(_translate("Form", f"{self.dial_orientation.value()} °"))
 
